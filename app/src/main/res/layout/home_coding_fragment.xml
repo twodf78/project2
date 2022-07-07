@@ -7,8 +7,14 @@
 
 
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="안녕? 난 coding 창" />
+
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="컴퓨터 관련 글 목록" />
+        android:layout_marginTop="30dp"
+        tools:listitem="@layout/home_itemlist"/>
 
 </FrameLayout>

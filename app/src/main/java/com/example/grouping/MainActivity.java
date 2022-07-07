@@ -50,8 +50,7 @@ public class MainActivity extends AppCompatActivity {
                     .commit();
         }
 
-        /* ==== set navigation bar ==== */
-
+        //하단 메뉴바 구현
         BottomNavigationView navigation = findViewById(R.id.bottomNavigationView);
         navigation.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();

@@ -5,9 +5,9 @@
     android:layout_height="match_parent"
     tools:context=".HomeTabFragmentAll">
 
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="전체 글 목록" />
+        tools:listitem="@layout/home_itemlist"/>
 
 </FrameLayout>
