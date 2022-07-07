@@ -6,6 +6,7 @@
     tools:context=".HomeTabFragmentAll">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/homerecyclerviewall"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:listitem="@layout/home_itemlist"/>
