@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
 //        //ViewPager 부분
 //        ViewPager vp = findViewById(R.id.viewpager);
 //        VPAdapter vpadapter = new VPAdapter(getSupportFragmentManager());
-//        vp.setAdapter(vpadapter);
+//        vp.setAdapter(vpadapter);hj
     }
 
 
