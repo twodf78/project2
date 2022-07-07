@@ -18,10 +18,11 @@
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.Grouping.NoActionBar">
+            android:theme="@style/Theme.Grouping.NoActionBar"
+            android:icon="@drawable/notification"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
