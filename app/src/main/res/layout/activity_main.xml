@@ -15,7 +15,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/framemainlayout"
-        android:name="com.example.grouping.ChattingFragment"
+        android:name="com.example.grouping.FragmentChatting"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottomNavigationView" />
