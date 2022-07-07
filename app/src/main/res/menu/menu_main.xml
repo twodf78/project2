@@ -3,8 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.grouping.MainActivity">
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:id="@+id/tabchatting"
+        android:enabled="true"
+        android:icon="@drawable/chat"
+        android:title="채팅" />
+    <item
+        android:id="@+id/tabhome"
+        android:enabled="true"
+        android:icon="@drawable/home"
+        android:title="홈" />
+    <item
+        android:id="@+id/tabmypage"
+        android:enabled="true"
+        android:icon="@drawable/user"
+        android:title="MyPage" />
 </menu>
