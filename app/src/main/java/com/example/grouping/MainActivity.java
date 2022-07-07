@@ -16,6 +16,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import org.json.JSONObject;
 
@@ -33,6 +34,7 @@ import java.net.URL;
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView mBottomNV;
+    TextView tv = (TextView)findViewById(R.id.textView);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +42,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         FloatingActionButton btn = (FloatingActionButton)findViewById(R.id.floatingaddbtn);
-
-
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(String... urls) {
             try {
 
-
+                //정확히 하고 싶은 거
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.accumulate("user_id", "20");
                 jsonObject.accumulate("name", "saeun");
@@ -155,6 +155,11 @@ public class MainActivity extends AppCompatActivity {
             }
 
             return null;
+        }
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            tv.setText(result);
         }
     }
 
