@@ -17,7 +17,7 @@ public class HomeFragment extends Fragment {
     ) {
 
         setHasOptionsMenu(true);
-        return inflater.inflate(R.layout.fragment_chatting, container, false);
+        return inflater.inflate(R.layout.fragment_home, container, false);
 
     }
 

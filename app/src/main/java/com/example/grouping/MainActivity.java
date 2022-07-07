@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
 
 import android.view.MenuItem;
 
@@ -22,18 +23,48 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mBottomNV = findViewById(R.id.bottomNavigationView);
-        mBottomNV.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() { //NavigationItemSelecte
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                BottomNavigate(menuItem.getItemId());
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (savedInstanceState == null) {
+            fragmentManager.beginTransaction()
+                    .setReorderingAllowed(true)
+                    .add(R.id.framemainlayout, HomeFragment.class, null)
+                    .commit();
+        }
 
+        /* ==== set navigation bar ==== */
 
-                return true;
-            }
+        BottomNavigationView navigation = findViewById(R.id.bottomNavigationView);
+        navigation.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.tabchatting)
+                fragmentManager.beginTransaction()
+                        .setReorderingAllowed(true)
+                        .replace(R.id.framemainlayout, ChattingFragment.class, null)
+                        .commit();
+            else if (itemId == R.id.tabhome)
+                fragmentManager.beginTransaction()
+                        .setReorderingAllowed(true)
+                        .replace(R.id.framemainlayout, HomeFragment.class, null)
+                        .commit();
+            else if (itemId == R.id.tabmypage)
+                fragmentManager.beginTransaction()
+                        .setReorderingAllowed(true)
+                        .replace(R.id.framemainlayout, MypageFragment.class, null)
+                        .commit();
+            else
+                return false;
+            return true;
         });
-        mBottomNV.setSelectedItemId(R.id.tabhome);
+        navigation.setOnItemReselectedListener(null);
+
+//        //ViewPager 부분
+//        ViewPager vp = findViewById(R.id.viewpager);
+//        VPAdapter vpadapter = new VPAdapter(getSupportFragmentManager());
+//        vp.setAdapter(vpadapter);
     }
+
+
+
     private void BottomNavigate(int id) {  //BottomNavigation 페이지 변경
         String tag = String.valueOf(id);
         FragmentManager fragmentManager = getSupportFragmentManager();
