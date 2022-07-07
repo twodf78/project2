@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class MypageFragment extends Fragment {
+public class FragmentMypage extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

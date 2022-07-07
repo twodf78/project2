@@ -42,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         FloatingActionButton btn = (FloatingActionButton)findViewById(R.id.floatingaddbtn);
+
+
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(String... urls) {
             try {
 
-                //정확히 하고 싶은 거
+
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.accumulate("user_id", "20");
                 jsonObject.accumulate("name", "saeun");

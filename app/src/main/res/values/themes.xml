@@ -22,4 +22,6 @@
     <style name="Theme.Grouping.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Grouping.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Theme.hometab" parent="Theme.AppCompat.Light.NoActionBar"/>
 </resources>

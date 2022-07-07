@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment;
 
 
 
-public class ChattingFragment extends Fragment {
+public class FragmentChatting extends Fragment {
 
     @Override
     public View onCreateView(
