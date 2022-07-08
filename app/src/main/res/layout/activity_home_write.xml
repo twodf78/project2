@@ -29,12 +29,15 @@
                 android:layout_marginLeft="5dp"
                 android:src="@drawable/field"/>
             <TextView
+                android:id="@+id/homefieldspinnertext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="   분야"/>
+                android:text="   분야   "/>
             <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:id="@+id/homefieldspinner"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:entries="@array/분야"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -54,12 +57,15 @@
                 android:src="@drawable/map"
                 android:layout_marginLeft="5dp"/>
             <TextView
+                android:id="@+id/homeregionspinnertext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="   지역"/>
+                android:text="   지역   "/>
             <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:id="@+id/homeregionspinner"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:entries="@array/지역"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -86,8 +92,10 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                     <EditText
+                        android:id="@+id/homeedittitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
                         android:hint="제목을 입력하세요."/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -97,6 +105,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="5dp">
                 <EditText
+                    android:id="@+id/homeeditcontent"
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
                     android:hint="내용을 입력하세요."/>
