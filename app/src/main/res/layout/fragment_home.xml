@@ -11,7 +11,7 @@
     <androidx.appcompat.widget.SearchView
         android:layout_width="340dp"
         android:layout_height="wrap_content"
-        android:layout_marginRight="40dp"
+        android:layout_marginEnd="40dp"
         app:iconifiedByDefault="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -19,120 +19,14 @@
         app:queryBackground="@color/gray"
         app:queryHint="검색어를 입력하세요." />
 
-<!--    //AppbarLayout을 사용할 때는 CoordinatorLayout 사용-->
-<!--    <androidx.coordinatorlayout.widget.CoordinatorLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent">-->
 
-<!--    <com.google.android.material.appbar.AppBarLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">-->
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/hometablayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:elevation="1dp"
-            app:tabGravity="fill"
-            app:tabMode="fixed"
-            app:tabIndicatorColor="#FF5722"
-            app:tabSelectedTextColor="#000000"
-            app:tabTextColor="#B0B3CA" >
-
-            <com.google.android.material.tabs.TabItem
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="전체"/>
-            <com.google.android.material.tabs.TabItem
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="코딩/IT"/>
-        </com.google.android.material.tabs.TabLayout>
-
-
-        <FrameLayout
-            android:id="@+id/homeframelayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/homerecyclerview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
-                tools:listitem="@layout/home_itemlist" />
-
-        </FrameLayout>
-
-<!--        <androidx.viewpager.widget.ViewPager-->
-<!--            android:id="@+id/viewpager"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content" />-->
-
-<!--    </com.google.android.material.appbar.AppBarLayout>-->
-
-
-<!--    <FrameLayout-->
-<!--        android:id="@+id/homeframelayout"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
-
-<!--        <androidx.recyclerview.widget.RecyclerView-->
-<!--            android:id="@+id/contactsRecView"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_centerHorizontal="true"-->
-<!--            android:layout_marginTop="20dp"-->
-<!--            tools:listitem="@layout/home_itemlist" />-->
-
-<!--    </FrameLayout>-->
-<!--    </androidx.coordinatorlayout.widget.CoordinatorLayout>-->
-
-    <!--    <com.google.android.material.tabs.TabLayout-->
-    <!--        android:id="@+id/hometablayout"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        app:tabIndicatorColor="#FF5722"-->
-    <!--        app:tabSelectedTextColor="#000000"-->
-    <!--        app:tabTextColor="#B0B3CA"-->
-    <!--        android:layout_marginTop="5dp">-->
-
-    <!--        <com.google.android.material.tabs.TabItem-->
-    <!--            android:id="@+id/hometabitemAll"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:text="전체" />-->
-
-    <!--        <com.google.android.material.tabs.TabItem-->
-    <!--            android:id="@+id/hometabitemCoding"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:text="코딩/IT" />-->
-    <!--    </com.google.android.material.tabs.TabLayout>-->
-
-    <!--    <androidx.viewpager.widget.ViewPager-->
-    <!--        android:id="@+id/viewpager"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content" />-->
-
-    <!--    <FrameLayout-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="match_parent"-->
-    <!--        android:id="@+id/homeframelayout">-->
-
-    <!--        <androidx.recyclerview.widget.RecyclerView-->
-    <!--            android:id="@+id/contactsRecView"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_centerHorizontal="true"-->
-    <!--            android:layout_marginTop="20dp"-->
-    <!--            tools:listitem="@layout/home_itemlist" />-->
-
-    <!--    </FrameLayout>-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/homerecyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        tools:listitem="@layout/home_itemlist_all" />
 
 
 </LinearLayout>
