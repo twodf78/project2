@@ -5,8 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -34,7 +36,9 @@ public class HomeRecyclerAdapterAll extends RecyclerView.Adapter<HomeRecyclerAda
 
     @Override
     public void onBindViewHolder(@NonNull HomeRecyclerAdapterAll.ViewHolder holder, int position) {
-        ((ViewHolder)holder).onBind(homeDataArrayList.get(position));
+        HomeData homeData = homeDataArrayList.get(position);
+
+        holder.txttitle.setText(homeData.getHometitle());
     }
 
     @Override
@@ -44,26 +48,19 @@ public class HomeRecyclerAdapterAll extends RecyclerView.Adapter<HomeRecyclerAda
 
     void addItem(HomeData data) {
         // 외부에서 item을 추가시킬 함수입니다.
-        homeDataArrayList.add(data);
+        this.homeDataArrayList.add(data);
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        Button homevhbtn1;
-        Button homevhbtn2;
-        Button homevhbtn3;
+        private final CardView homecardview;
+        private final TextView txttitle;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            homevhbtn1=itemView.findViewById(R.id.homeshortinfobtn1);
-            homevhbtn2=itemView.findViewById(R.id.homeshortinfobtn2);
-            homevhbtn3=itemView.findViewById(R.id.homeshortinfobtn3);
-        }
-
-        public void onBind(HomeData data){
-            //버튼 타입 문제 생길 수도
-            homevhbtn1.setText((CharSequence) data.getHomebtn1());
-            homevhbtn2.setText((CharSequence) data.getHomebtn2());
-            homevhbtn3.setText((CharSequence) data.getHomebtn3());
+            homecardview= itemView.findViewById(R.id.homeparent);
+            txttitle=itemView.findViewById(R.id.homecardviewtitle);
         }
     }
 }

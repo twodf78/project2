@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="분야">
+        <item>전체</item>
+        <item>코딩/IT</item>
+        <item>줌터디</item>
+        <item>스포츠</item>
+    </string-array>
+
+    <string-array name="지역">
+        <item>전체</item>
+        <item>서울/경기</item>
+        <item>충남</item>
+        <item>부산</item>
+    </string-array>
+
+</resources>
