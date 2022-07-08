@@ -9,7 +9,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="안녕? 난 coding 창" />
+        android:text="안녕? 난 coding 창"
+        tools:ignore="HardcodedText" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"

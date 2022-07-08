@@ -1,5 +1,6 @@
 package com.example.grouping;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -14,6 +15,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -34,12 +36,13 @@ import java.net.URL;
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView mBottomNV;
-    TextView tv = (TextView)findViewById(R.id.textView);
-
+    public String rs;
+    TextView tv;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        tv = (TextView)findViewById(R.id.textView);
 
         FloatingActionButton btn = (FloatingActionButton)findViewById(R.id.floatingaddbtn);
 
@@ -47,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new JSONTask().execute("http://172.10.5.168:443/post");//AsyncTask 시작시킴
+                populateTable();
             }
         });
 
@@ -55,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             fragmentManager.beginTransaction()
                     .setReorderingAllowed(true)
-                    .add(R.id.framemainlayout, HomeFragment.class, null)
+                    .add(R.id.framemainlayout, FragmentHome.class, null)
                     .commit();
         }
 
@@ -67,17 +70,17 @@ public class MainActivity extends AppCompatActivity {
             if (itemId == R.id.tabchatting)
                 fragmentManager.beginTransaction()
                         .setReorderingAllowed(true)
-                        .replace(R.id.framemainlayout, ChattingFragment.class, null)
+                        .replace(R.id.framemainlayout, FragmentChatting.class, null)
                         .commit();
             else if (itemId == R.id.tabhome)
                 fragmentManager.beginTransaction()
                         .setReorderingAllowed(true)
-                        .replace(R.id.framemainlayout, HomeFragment.class, null)
+                        .replace(R.id.framemainlayout, FragmentHome.class, null)
                         .commit();
             else if (itemId == R.id.tabmypage)
                 fragmentManager.beginTransaction()
                         .setReorderingAllowed(true)
-                        .replace(R.id.framemainlayout, MypageFragment.class, null)
+                        .replace(R.id.framemainlayout, FragmentMypage.class, null)
                         .commit();
             else
                 return false;
@@ -85,56 +88,58 @@ public class MainActivity extends AppCompatActivity {
         });
         navigation.setOnItemReselectedListener(null);
 
-//        //ViewPager 부분
-//        ViewPager vp = findViewById(R.id.viewpager);
-//        VPAdapter vpadapter = new VPAdapter(getSupportFragmentManager());
-//        vp.setAdapter(vpadapter);hj
     }
+    private void populateTable() {
+        ProgressDialog mProgressDialog = ProgressDialog.show(this, "Please wait", "Long operation starts...", true);
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    new JSONTask().execute("http://172.10.5.168:443/get/suggest");//AsyncTask 시작시킴
+                    // code runs in a thread
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mProgressDialog.dismiss();
+                        }
+                    });
+                } catch (final Exception ex) {
+                    Log.i("---","Exception in thread");
+                }
+            }
+        }.start();
 
+    }
+    public class JSONTask extends AsyncTask<String, String, String>{
 
-    public class JSONTask extends AsyncTask<String, String, String> {
         @Override
         protected String doInBackground(String... urls) {
             try {
-
-
                 JSONObject jsonObject = new JSONObject();
-                jsonObject.accumulate("user_id", "20");
-                jsonObject.accumulate("name", "saeun");
+                jsonObject.accumulate("user_id", "2");
+                jsonObject.accumulate("name", "김태훈");
 
                 HttpURLConnection con = null;
                 BufferedReader reader = null;
 
                 try{
+                    //URL url = new URL("http://192.168.25.16:3000/users");
                     URL url = new URL(urls[0]);
                     con = (HttpURLConnection) url.openConnection();
-                    con.setRequestMethod("POST");//POST방식으로 보냄
-                    con.setRequestProperty("Cache-Control", "no-cache");//캐시 설정
-                    con.setRequestProperty("Content-Type", "application/json");//application JSON 형식으로 전송
-                    con.setRequestProperty("Accept", "text/html");//서버에 response 데이터를 html로 받음
-
-                    con.setDoOutput(true);//Outstream으로 post 데이터를 넘겨주겠다는 의미
-                    con.setDoInput(true);//Inputstream으로 서버로부터 응답을 받겠다는 의미
-
-                    con.connect();//서버로 보내기위해서 스트림 만듬
-
-
-                    OutputStream outStream = con.getOutputStream();//버퍼를 생성하고 넣음
-                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outStream));
-                    writer.write(jsonObject.toString());
-                    writer.flush();
-                    writer.close();//버퍼를 받아줌
-
-
+                    con.connect();
 
                     InputStream stream = con.getInputStream();
+
                     reader = new BufferedReader(new InputStreamReader(stream));
+
                     StringBuffer buffer = new StringBuffer();
+
                     String line = "";
                     while((line = reader.readLine()) != null){
                         buffer.append(line);
                     }
-                    return buffer.toString();//서버로 부터 받은 값을 리턴해줌 아마 OK!!가 들어올것임
+
+                    return buffer.toString();
 
                 } catch (MalformedURLException e){
                     e.printStackTrace();
@@ -146,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     try {
                         if(reader != null){
-                            reader.close();//버퍼를 닫아줌
+                            reader.close();
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -158,11 +163,84 @@ public class MainActivity extends AppCompatActivity {
 
             return null;
         }
+
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             tv.setText(result);
         }
     }
+//    public class JSONTask extends AsyncTask<String, String, String> {
+//        @Override
+//        protected String doInBackground(String... urls) {
+//            try {
+//
+//
+//                JSONObject jsonObject = new JSONObject();
+//                jsonObject.accumulate("user_id", "2");
+//                jsonObject.accumulate("name", "김태훈");
+//
+//                HttpURLConnection con = null;
+//                BufferedReader reader = null;
+//
+//                try{
+//                    URL url = new URL(urls[0]);
+//                    con = (HttpURLConnection) url.openConnection();
+//                    con.setRequestMethod("POST");//get방식으로 보냄
+//                    con.setRequestProperty("Cache-Control", "no-cache");//캐시 설정
+//                    con.setRequestProperty("Content-Type", "application/json");//application JSON 형식으로 전송
+//                    con.setRequestProperty("Accept", "text/html");//서버에 response 데이터를 html로 받음
+//
+////                    con.setDoOutput(true);//Outstream으로 post 데이터를 넘겨주겠다는 의미
+//                    con.setDoInput(true);//Inputstream으로 서버로부터 응답을 받겠다는 의미
+//
+//                    con.connect();//서버로 보내기위해서 스트림 만듬
+//
+//
+//                    OutputStream outStream = con.getOutputStream();//버퍼를 생성하고 넣음
+//                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outStream));
+//                    writer.write(jsonObject.toString());
+//                    writer.flush();
+//                    writer.close();//버퍼를 받아줌
+//
+//
+//
+//                    InputStream stream = con.getInputStream();
+//                    reader = new BufferedReader(new InputStreamReader(stream));
+//                    StringBuffer buffer = new StringBuffer();
+//                    String line = "";
+//                    while((line = reader.readLine()) != null){
+//                        buffer.append(line);
+//                    }
+//                    return buffer.toString();//서버로 부터 받은 값을 리턴해줌 아마 OK!!가 들어올것임
+//
+//                } catch (MalformedURLException e){
+//                    e.printStackTrace();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                } finally {
+//                    if(con != null){
+//                        con.disconnect();
+//                    }
+//                    try {
+//                        if(reader != null){
+//                            reader.close();//버퍼를 닫아줌
+//                        }
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//
+//            return null;
+//        }
+//        @Override
+//        protected void onPostExecute(String result) {
+//            super.onPostExecute(result);
+//            rs=result;
+//        }
+//    }
 
 }

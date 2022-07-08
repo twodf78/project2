@@ -31,7 +31,7 @@ public class FragmentHome extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         tabLayout=view.findViewById(R.id.hometablayout);
-        viewPager=view.findViewById(R.id.viewpager);
+//        viewPager=view.findViewById(R.id.viewpager);
 
         adapter=new VPAdapter(requireActivity().getSupportFragmentManager(),1);
 
@@ -39,11 +39,9 @@ public class FragmentHome extends Fragment {
         adapter.addFragment(new HomeTabFragmentAll());
         adapter.addFragment(new HomeTabFragmentCoding());
 
-        //ViewPager Fragment 연결
-        viewPager.setAdapter(adapter);
 
         //ViewPager과 TabLayout 연결
-        tabLayout.setupWithViewPager(viewPager);
+//        tabLayout.setupWithViewPager(viewPager);
 
         Objects.requireNonNull(tabLayout.getTabAt(0)).setText("전체");
         Objects.requireNonNull(tabLayout.getTabAt(1)).setText("코딩/IT");
