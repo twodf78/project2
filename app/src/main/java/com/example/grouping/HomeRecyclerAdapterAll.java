@@ -1,6 +1,7 @@
 package com.example.grouping;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,14 +12,18 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class HomeRecyclerAdapterAll extends RecyclerView.Adapter<HomeRecyclerAdapterAll.ViewHolder> {
-    private final ArrayList<HomeData> homeDataArrayList = new ArrayList<>();
+    private final ArrayList<JSONObject> arrayList ;
     private final Context context;
 
     public HomeRecyclerAdapterAll(Context context) {
         this.context = context;
+        arrayList = new ArrayList<>();
     }
 
     @NonNull
@@ -36,31 +41,38 @@ public class HomeRecyclerAdapterAll extends RecyclerView.Adapter<HomeRecyclerAda
 
     @Override
     public void onBindViewHolder(@NonNull HomeRecyclerAdapterAll.ViewHolder holder, int position) {
-        HomeData homeData = homeDataArrayList.get(position);
-
-        holder.txttitle.setText(homeData.getHometitle());
+        JSONObject jsonData = arrayList.get(position);
+        try {
+            holder.textContent.setText(jsonData.getString("content"));
+            holder.textTitle.setText(jsonData.getString("hobby_id"));
+            holder.btn1.setText(jsonData.getString("created_by"));
+            holder.btn2.setText(jsonData.getString("startTime"));
+            holder.btn3.setText(jsonData.getString("endTIME"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public int getItemCount() {
-        return homeDataArrayList.size();
+        return arrayList.size();
     }
 
-    void addItem(HomeData data) {
-        // 외부에서 item을 추가시킬 함수입니다.
-        this.homeDataArrayList.add(data);
-        notifyDataSetChanged();
+    public void setArrayData(JSONObject jsonData) {
+        arrayList.add(jsonData);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private final CardView homecardview;
-        private final TextView txttitle;
-
+        private final TextView textTitle;
+        TextView textContent;
+        Button btn1,btn2,btn3;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
-            homecardview= itemView.findViewById(R.id.homeparent);
-            txttitle=itemView.findViewById(R.id.homecardviewtitle);
+            textContent= itemView.findViewById(R.id.homecardviewcontent);
+            textTitle=itemView.findViewById(R.id.homecardviewtitle);
+            btn1=itemView.findViewById(R.id.homeshortinfobtn1);
+            btn2=itemView.findViewById(R.id.homeshortinfobtn2);
+            btn3=itemView.findViewById(R.id.homeshortinfobtn3);
         }
     }
 }

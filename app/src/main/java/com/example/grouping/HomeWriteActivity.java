@@ -52,17 +52,12 @@ public class HomeWriteActivity extends AppCompatActivity {
                     Intent intent = new Intent(HomeWriteActivity.this, FragmentHome.class);
 //                    intent.putExtra("title", title.getText().toString());
                     //보낼 데이터가 있다면 여기서 보내면 됨.
-                    //!!!!!!!!!!!!!!!!확인 suggest GET 제목, 지역, 분야
+                    //!!!!!!!!!!!!!!!!확인 suggest POST 제목, 지역, 분야
                     startActivity(intent);
 
                 }
 
             }
         });
-
-
-
-
-
     }
 }
