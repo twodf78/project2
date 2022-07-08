@@ -19,55 +19,14 @@
         app:queryBackground="@color/gray"
         app:queryHint="검색어를 입력하세요." />
 
-<!--    //AppbarLayout을 사용할 때는 CoordinatorLayout 사용-->
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/homerecyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-<!--    <androidx.appcompat.widget.Toolbar-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:background="@color/gray"-->
-<!--        android:theme="@style/ThemeOverlay.AppCompat.Dark"-->
-<!--        android:elevation="1dp"-->
-<!--        android:id="@+id/toolbar"></androidx.appcompat.widget.Toolbar>-->
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/hometablayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:elevation="1dp"
-            app:tabGravity="fill"
-            app:tabMode="fixed"
-            app:tabIndicatorColor="#FF5722"
-            app:tabSelectedTextColor="#000000"
-            app:tabTextColor="#B0B3CA" />
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-
-        <FrameLayout
-            android:id="@+id/homeframelayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/homerecyclerview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
-                tools:listitem="@layout/home_itemlist_all" />
-
-        </FrameLayout>
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        tools:listitem="@layout/home_itemlist_all" />
 
 
 </LinearLayout>

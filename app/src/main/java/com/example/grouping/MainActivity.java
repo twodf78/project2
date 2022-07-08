@@ -1,5 +1,6 @@
 package com.example.grouping;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -39,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 new JSONTask().execute("http://172.10.5.168:443/post");//AsyncTask 시작시킴
+                Intent intent = new Intent(MainActivity.this, HomeWriteActivity.class);
+                startActivity(intent);
             }
         });
 
