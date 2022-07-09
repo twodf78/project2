@@ -19,6 +19,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.grouping.post.PostParty;
+import com.example.grouping.post.PostSuggest;
 import com.google.android.material.tabs.TabLayout;
 
 import org.json.JSONArray;
@@ -35,13 +37,27 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Body;
+
 
 public class FragmentHome extends Fragment {
 
+    private final String URL = "http://172.10.19.184:443/";
+    private final String TAG = "request log";
+
+    private Retrofit retrofit;
+    private APIService service;
+
     HomeRecyclerAdapterAll homeadapter;
-    public static ArrayList<JSONObject> jsonArray =new ArrayList<>();
-    ;
+    public static ArrayList<JSONObject> jsonHomeArray =new ArrayList<>();
     RecyclerView recyclerView;
+
     public FragmentHome() {
         super(R.layout.fragment_home);
     }
@@ -61,14 +77,17 @@ public class FragmentHome extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         final Context context = view.getContext();
 
+
         //recyclerview 만드는 부분
         homeadapter = new HomeRecyclerAdapterAll(context);
         RecyclerView recyclerView = view.findViewById(R.id.homerecyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        new JSONTask().execute("http://172.10.5.168:443/get/suggest");
 
-        for (int i=0; i<jsonArray.size();i++){
-            homeadapter.setArrayData(jsonArray.get(i));
+        populateTable();
+
+
+        for (int i=0; i<jsonHomeArray.size();i++){
+            homeadapter.setArrayData(jsonHomeArray.get(i));
         }
         recyclerView.setAdapter(homeadapter);
 
@@ -83,8 +102,7 @@ public class FragmentHome extends Fragment {
             @Override
             public void run() {
                 try {
-                    new JSONTask().execute("http://172.10.5.168:443/get/suggest");//AsyncTask 시작시킴
-                    // code runs in a thread
+                    request();
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -97,75 +115,52 @@ public class FragmentHome extends Fragment {
             }
         }.start();
     }
-    public class JSONTask extends AsyncTask<String, String, String> {
 
-        @Override
-        protected String doInBackground(String... urls) {
-            try {
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.accumulate("user_id", "2");
-//                jsonObject.accumulate("name", "김태훈");
+    private void request() {
+        retrofit = new Retrofit.Builder()
+                .baseUrl(URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        service = retrofit.create(APIService.class);
 
-                HttpURLConnection con = null;
-                BufferedReader reader = null;
+        //이 아래 줄을 원하는 대로 바꾸면 된다.
+        Call<ResponseBody> call_get = service.getSuggest();
 
-                try{
-                    //URL url = new URL("http://192.168.25.16:3000/users");
-                    URL url = new URL(urls[0]);
-                    con = (HttpURLConnection) url.openConnection();
-                    con.connect();
+//        PostParty post = new PostParty(1, 2, "asdasds");
+//        Call<PostParty> call_post = service.postParty(post );
 
-                    InputStream stream = con.getInputStream();
-
-                    reader = new BufferedReader(new InputStreamReader(stream));
-
-                    StringBuffer buffer = new StringBuffer();
-
-                    String line = "";
-                    while((line = reader.readLine()) != null){
-                        buffer.append(line);
-                    }
-
-                    return buffer.toString();
-
-                } catch (MalformedURLException e){
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    if(con != null){
-                        con.disconnect();
-                    }
+        call_get.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
                     try {
-                        if(reader != null){
-                            reader.close();
+                        //result == 가져온 정보
+                        String result = response.body().string();
+                        Log.v(TAG, "result = " + result);
+                        try {
+                            //result를 어떻게 쓸지는 여기서 결정.
+                            JSONArray arr = new JSONArray(result);
+                            for (int i=0; i<arr.length();i++){
+                                jsonHomeArray.add(arr.getJSONObject(i));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                } else {
+                    Log.v(TAG, "error = " + String.valueOf(response.code()));
+                    Toast.makeText(getContext(), "error = " + String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
 
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            try {
-
-                JSONArray arr = new JSONArray(result);
-                for (int i=0; i<arr.length();i++){
-                    jsonArray.add(arr.getJSONObject(i));
-                }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.v(TAG, "Fail");
+                Toast.makeText(getContext(), "Response Fail", Toast.LENGTH_SHORT).show();
             }
-
-        }
+        });
     }
 }
 
