@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/startLayout"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,37 +11,53 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
-        android:textSize="20dp"
-        android:text="            Welcome to"
         android:layout_gravity="left"
-        android:textStyle="italic"/>
+        android:layout_marginTop="140dp"
+        android:text="            Welcome to"
+        android:textSize="20dp"
+        android:textStyle="italic" />
 
 
     <ImageView
         android:layout_width="350dp"
         android:layout_height="320dp"
         android:layout_gravity="center"
-        android:scaleType="centerCrop"
         android:layout_marginTop="0dp"
-        android:src="@drawable/startimage"/>
+        android:scaleType="centerCrop"
+        android:src="@drawable/startimage" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="0dp"
-        android:textSize="50dp"
-        android:text="Gathering"
         android:layout_gravity="center"
-        android:textStyle="italic"/>
+        android:layout_marginTop="0dp"
+        android:text="Gathering"
+        android:textSize="50dp"
+        android:textStyle="italic" />
 
-    <Button
-        android:id="@+id/gologinbtn"
+    <ImageButton
+        android:id="@+id/kakaoLoginbtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="40dp"
-        android:backgroundTint="@color/lightblue2"
-        android:text="로그인 하러가기"/>
+        android:layout_marginTop="50dp"
+        android:background="@drawable/kakaologin" />
+
+    <TextView
+        android:id="@+id/kakaoLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="13dp"
+        android:layout_marginTop="15dp"
+        android:text="로그아웃하기" />
+
+    <View
+        android:layout_width="70dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="0.1dp"
+        android:layout_gravity="center"
+        android:background="@color/black" />
+
 
 </LinearLayout>

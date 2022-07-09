@@ -6,31 +6,59 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".GlobalApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Grouping"
+        android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
         tools:targetApi="31">
         <activity
+            android:name=".ChattingRoomActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MypageMyratingActivity"
+            android:exported="false" />
+        <activity
             android:name=".StartActivity"
-            android:exported="false" />
-        <activity
-            android:name=".HomeWriteActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
             android:exported="true"
             android:icon="@drawable/notification"
-            android:label="@string/app_name"
             android:theme="@style/Theme.Grouping.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MypageMywritingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".HomeSeeWriting"
+            android:exported="false" />
+        <activity
+            android:name=".HomeWriteActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- Redirect URI: "kakao{NATIVE_APP_KEY}://oauth" -->
+                <data
+                    android:host="oauth"
+                    android:scheme="kakao68ba8aa108c773001204e2d9c914f064" />
             </intent-filter>
         </activity>
     </application>

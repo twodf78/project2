@@ -47,14 +47,13 @@ public class HomeWriteActivity extends AppCompatActivity {
                 else if(content.getText().toString().length()==0){
                     Toast.makeText(v.getContext(), "스터디 내용을 입력하세요.", Toast.LENGTH_SHORT).show();
                 }
-                else{
-                    Toast.makeText(getApplicationContext(), "생성한 스터디가 성공적으로 업로딩 되었습니다.", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(HomeWriteActivity.this, FragmentHome.class);
+                else if(title.getText().toString().length()!=0&&content.getText().toString().length()!=0){
+                    Toast.makeText(v.getContext(), "생성한 스터디가 성공적으로 업로딩 되었습니다.", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(HomeWriteActivity.this, MainActivity.class);
 //                    intent.putExtra("title", title.getText().toString());
                     //보낼 데이터가 있다면 여기서 보내면 됨.
                     //!!!!!!!!!!!!!!!!확인 suggest GET 제목, 지역, 분야
                     startActivity(intent);
-
                 }
 
             }

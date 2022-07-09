@@ -1,17 +1,20 @@
 package com.example.grouping;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
+import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.appcompat.app.AppCompatActivity;
-
-import androidx.fragment.app.FragmentManager;
-import androidx.viewpager.widget.ViewPager;
-
-import android.view.View;
 
 import org.json.JSONObject;
 
@@ -25,6 +28,8 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        getHashKey();
 
         FloatingActionButton btn = (FloatingActionButton)findViewById(R.id.floatingaddbtn);
 
@@ -55,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
         //하단 메뉴바 구현
         BottomNavigationView navigation = findViewById(R.id.bottomNavigationView);
+        navigation.setSelectedItemId(R.id.tabhome);
         navigation.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.tabchatting)
@@ -82,6 +91,27 @@ public class MainActivity extends AppCompatActivity {
 //        ViewPager vp = findViewById(R.id.viewpager);
 //        VPAdapter vpadapter = new VPAdapter(getSupportFragmentManager());
 //        vp.setAdapter(vpadapter);
+    }
+
+    private void getHashKey(){
+        PackageInfo packageInfo = null;
+        try {
+            packageInfo = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (packageInfo == null)
+            Log.e("KeyHash", "KeyHash:null");
+
+        for (Signature signature : packageInfo.signatures) {
+            try {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.d("KeyHash", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            } catch (NoSuchAlgorithmException e) {
+                Log.e("KeyHash", "Unable to get MessageDigest. signature=" + signature, e);
+            }
+        }
     }
 
 
