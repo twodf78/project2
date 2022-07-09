@@ -1,7 +1,6 @@
 package com.example.grouping;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +8,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONException;
@@ -17,37 +15,35 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class HomeRecyclerAdapterAll extends RecyclerView.Adapter<HomeRecyclerAdapterAll.ViewHolder> {
+public class ChattingAdapter extends RecyclerView.Adapter<ChattingAdapter.ViewHolder> {
     private final ArrayList<JSONObject> arrayList ;
     private final Context context;
 
-    public HomeRecyclerAdapterAll(Context context) {
+    public ChattingAdapter(Context context) {
         this.context = context;
         arrayList = new ArrayList<>();
     }
 
     @NonNull
     @Override
-    public HomeRecyclerAdapterAll.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ChattingAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater
                 .from(parent.getContext())
                 .inflate(
-                        R.layout.home_itemlist_all,
+                        R.layout.chatting_partylist,
                         parent,
                         false
                 );
-        return new ViewHolder(view);
+        return new ChattingAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HomeRecyclerAdapterAll.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ChattingAdapter.ViewHolder holder, int position) {
         JSONObject jsonData = arrayList.get(position);
         try {
-            holder.textContent.setText(jsonData.getString("content"));
-            holder.textTitle.setText(jsonData.getString("hobby_id"));
-            holder.btn1.setText(jsonData.getString("created_by"));
-            holder.btn2.setText(jsonData.getString("startTime"));
-            holder.btn3.setText(jsonData.getString("endTIME"));
+            holder.textTitle.setText(jsonData.getString("user_id"));
+            holder.btn1.setText(jsonData.getString("suggest_id"));
+            holder.btn2.setText(jsonData.getString("chatting"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -64,15 +60,13 @@ public class HomeRecyclerAdapterAll extends RecyclerView.Adapter<HomeRecyclerAda
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView textTitle;
-        TextView textContent;
         Button btn1,btn2,btn3;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            textContent= itemView.findViewById(R.id.homecardviewcontent);
-            textTitle=itemView.findViewById(R.id.homecardviewtitle);
-            btn1=itemView.findViewById(R.id.homeshortinfobtn1);
-            btn2=itemView.findViewById(R.id.homeshortinfobtn2);
-            btn3=itemView.findViewById(R.id.homeshortinfobtn3);
+            textTitle=itemView.findViewById(R.id.partyOwner);
+            btn1=itemView.findViewById(R.id.chattingBtn1);
+            btn2=itemView.findViewById(R.id.chattingBtn2);
+            btn3=itemView.findViewById(R.id.chattingBtn3);
         }
     }
 }

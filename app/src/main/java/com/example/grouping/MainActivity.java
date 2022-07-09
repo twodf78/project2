@@ -1,5 +1,6 @@
 package com.example.grouping;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -15,6 +16,8 @@ import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import android.util.Log;
+import android.view.View;
 
 import org.json.JSONObject;
 
@@ -47,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new JSONTask().execute("http://172.10.5.168:443/post");//AsyncTask 시작시킴
                 Intent intent = new Intent(MainActivity.this, HomeWriteActivity.class);
                 startActivity(intent);
             }
