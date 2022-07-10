@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,9 +24,11 @@ import java.util.ArrayList;
 public class MyPageRatingAdapter extends RecyclerView.Adapter<MyPageRatingAdapter.ViewHolder> {
     private final ArrayList<JSONObject> arrayList ;
     private final Context context;
+    private final String current_user_id;
 
-    public MyPageRatingAdapter(Context context) {
+    public MyPageRatingAdapter(String current_user_id, Context context) {
         this.context = context;
+        this.current_user_id = current_user_id;
         arrayList = new ArrayList<>();
     }
 
@@ -54,13 +57,23 @@ public class MyPageRatingAdapter extends RecyclerView.Adapter<MyPageRatingAdapte
 
         holder.bad.setOnClickListener(new View.OnClickListener() {
             //attractive 10점 빼기
-
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), HomeSeeWriting.class);
+                Intent intent = new Intent(v.getContext(), MypageMyratingActivity.class);
                 try {
-                    intent.putExtra("suggest_id",jsonData.getString("id"));
-                    intent.putExtra("user_id",jsonData.getString("created_by"));
+                    int rate = Integer.parseInt(jsonData.getString("attractive")) - 10;
+                    if(rate < 0){
+                        rate =0;
+                        Toast.makeText(context.getApplicationContext(), "매력 점수는 0점 미만으로 떨어질 수 없습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                    intent.putExtra("attractive",String.valueOf(rate));
+                    intent.putExtra("ratedUser_id",jsonData.getString("id"));
+                    intent.putExtra("hobby_id",jsonData.getString("hobby_id"));
+                    intent.putExtra("image",jsonData.getString("image"));
+                    intent.putExtra("name",jsonData.getString("name"));
+                    intent.putExtra("user_id",current_user_id);
+                    Toast.makeText(context.getApplicationContext(), jsonData.getString("name") + " 매력 점수 10점 하락", Toast.LENGTH_SHORT).show();
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -73,10 +86,22 @@ public class MyPageRatingAdapter extends RecyclerView.Adapter<MyPageRatingAdapte
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), HomeSeeWriting.class);
+                Intent intent = new Intent(v.getContext(), MypageMyratingActivity.class);
                 try {
-                    intent.putExtra("suggest_id",jsonData.getString("id"));
-                    intent.putExtra("user_id",jsonData.getString("created_by"));
+                    int rate = Integer.parseInt(jsonData.getString("attractive")) + 10;
+                    if(rate > 100){
+                        rate = 100;
+                        Toast.makeText(context.getApplicationContext(), "매력 점수는 100점을 초과할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                    intent.putExtra("attractive",String.valueOf(rate));
+                    intent.putExtra("ratedUser_id",jsonData.getString("id"));
+                    intent.putExtra("hobby_id",jsonData.getString("hobby_id"));
+                    intent.putExtra("image",jsonData.getString("image"));
+                    intent.putExtra("name",jsonData.getString("name"));
+                    intent.putExtra("user_id",current_user_id);
+
+                    Toast.makeText(context.getApplicationContext(), jsonData.getString("name") + " 매력 점수 10점 상승", Toast.LENGTH_SHORT).show();
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -88,10 +113,22 @@ public class MyPageRatingAdapter extends RecyclerView.Adapter<MyPageRatingAdapte
             //attractive 20점 추가
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), HomeSeeWriting.class);
+                Intent intent = new Intent(v.getContext(), MypageMyratingActivity.class);
                 try {
-                    intent.putExtra("suggest_id",jsonData.getString("id"));
-                    intent.putExtra("user_id",jsonData.getString("created_by"));
+                    int rate = Integer.parseInt(jsonData.getString("attractive")) + 20;
+                    if(rate > 100){
+                        rate = 100;
+                        Toast.makeText(context.getApplicationContext(), "매력 점수는 100점을 초과할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                    intent.putExtra("attractive",String.valueOf(rate));
+                    intent.putExtra("ratedUser_id",jsonData.getString("id"));
+                    intent.putExtra("hobby_id",jsonData.getString("hobby_id"));
+                    intent.putExtra("image",jsonData.getString("image"));
+                    intent.putExtra("name",jsonData.getString("name"));
+                    intent.putExtra("user_id",current_user_id);
+
+                    Toast.makeText(context.getApplicationContext(), jsonData.getString("name") + " 매력 점수 20점 상승", Toast.LENGTH_SHORT).show();
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

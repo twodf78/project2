@@ -36,16 +36,17 @@ public class HomeSeeWriting extends AppCompatActivity {
     TextView oneSuggestArea;
     TextView oneSuggestLocation;
     TextView oneSuggestContent;
-    TextView oneSuggestName;
+    TextView oneSuggestTitle;
 
     ImageView oneUserImage;
     TextView oneUserAttract;
     TextView oneUserTitle;
+    TextView oneUserName;
 
     TextView oneSuggestJoinBtn;
     JSONArray arrSuggest;
     JSONArray arrUser;
-
+    JSONArray arrTitle;
     private static final String URL = "http://172.10.19.184:443/";
     private final String TAG = "request log";
 
@@ -55,6 +56,11 @@ public class HomeSeeWriting extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        retrofit = new Retrofit.Builder()
+                .baseUrl(URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        service = retrofit.create(APIService.class);
 
         Intent getIntent = getIntent();
         String currentSuggestId = getIntent.getStringExtra("suggest_id");
@@ -94,12 +100,6 @@ public class HomeSeeWriting extends AppCompatActivity {
 
     private void requestPostParty(String createdUserId, String currentSuggestId, String comment) {
         PostParty post =new PostParty(Integer.parseInt(createdUserId), Integer.parseInt(currentSuggestId), comment);
-
-        retrofit = new Retrofit.Builder()
-                .baseUrl(URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        service = retrofit.create(APIService.class);
         Call<PostParty> call_post = service.postParty(post);
         call_post.enqueue(new Callback<PostParty>() {
             @Override
@@ -112,24 +112,16 @@ public class HomeSeeWriting extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "error = " + String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
                 }
             }
-
             @Override
             public void onFailure(Call<PostParty> call, Throwable t) {
                 Log.v(TAG, "Fail");
                 Toast.makeText(getApplicationContext(), "Response Fail", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
 
     private void requestSuggest(String suggest_id) {
-        retrofit = new Retrofit.Builder()
-                .baseUrl(URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        service = retrofit.create(APIService.class);
-
         Call<ResponseBody> call_get = service.getSuggestById(suggest_id);
         call_get.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -152,7 +144,6 @@ public class HomeSeeWriting extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "error = " + String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
                 }
             }
-
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Log.v(TAG, "Fail");
@@ -161,12 +152,6 @@ public class HomeSeeWriting extends AppCompatActivity {
         });
     }
     private void requestUser(String user_id) {
-        retrofit = new Retrofit.Builder()
-                .baseUrl(URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        service = retrofit.create(APIService.class);
-
         Call<ResponseBody> call_get = service.getUser(user_id);
         call_get.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -178,6 +163,8 @@ public class HomeSeeWriting extends AppCompatActivity {
                         try {
                             arrUser = new JSONArray(result);
                             setUserView();
+                            requestTitle(arrUser.getJSONObject(0).getString("attractive"));
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -189,7 +176,36 @@ public class HomeSeeWriting extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "error = " + String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
                 }
             }
-
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.v(TAG, "Fail");
+                Toast.makeText(getApplicationContext(), "Response Fail", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private void requestTitle(String attractive) {
+        Call<ResponseBody> call_get = service.getTitle(attractive);
+        call_get.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    try {
+                        String result = response.body().string();
+                        Log.v(TAG, "result = " + result);
+                        try {
+                            arrTitle = new JSONArray(result);
+                            oneUserTitle.setText(arrTitle.getJSONObject(0).getString("title_name"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Log.v(TAG, "error = " + String.valueOf(response.code()));
+                    Toast.makeText(getApplicationContext(), "error = " + String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                }
+            }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Log.v(TAG, "Fail");
@@ -201,14 +217,15 @@ public class HomeSeeWriting extends AppCompatActivity {
     private void viewInit() {
         setContentView(R.layout.activity_home_see_writing);
 
-        oneUserImage = findViewById(R.id.oneSuggestImage);
-        oneUserTitle = findViewById(R.id.oneSuggestTitle);
-        oneUserAttract = findViewById(R.id.oneSuggestAttract);
+        oneUserImage = findViewById(R.id.oneUserImage);
+        oneUserTitle = findViewById(R.id.oneUserTitle);
+        oneUserAttract = findViewById(R.id.oneUserAttract);
+        oneUserName = findViewById(R.id.oneUserName);
 
         oneSuggestArea = findViewById(R.id.oneSuggestArea);
         oneSuggestLocation = findViewById(R.id.oneSuggestLocation);
         oneSuggestContent = findViewById(R.id.oneSuggestContent);
-        oneSuggestName = findViewById(R.id.oneSuggestName);
+        oneSuggestTitle = findViewById(R.id.oneSuggestTitle);
 
         oneSuggestJoinBtn = findViewById(R.id.oneSuggestJoinBtn);
     }
@@ -217,7 +234,7 @@ public class HomeSeeWriting extends AppCompatActivity {
             try {
                 oneSuggestArea.setText(arrSuggest.getJSONObject(0).getString("startTime"));
                 oneSuggestLocation.setText(arrSuggest.getJSONObject(0).getString("endTIME"));
-                oneSuggestName.setText(arrSuggest.getJSONObject(0).getString("created_by"));
+                oneSuggestTitle.setText(arrSuggest.getJSONObject(0).getString("created_by"));
                 oneSuggestContent.setText(arrSuggest.getJSONObject(0).getString("content"));
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -229,9 +246,9 @@ public class HomeSeeWriting extends AppCompatActivity {
 
         if(arrUser!=null){
             try {
-//                oneUserImage.setText(arrSuggest.getJSONObject(0).getString("startTime"));
+                //                oneUserImage.setText(arrSuggest.getJSONObject(0).getString("startTime"));
                 oneUserAttract.setText(arrUser.getJSONObject(0).getString("attractive"));
-                oneUserTitle.setText(arrUser.getJSONObject(0).getString("name"));
+                oneUserName.setText(arrUser.getJSONObject(0).getString("name"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }

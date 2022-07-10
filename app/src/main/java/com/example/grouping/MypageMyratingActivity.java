@@ -8,8 +8,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
+
+import com.example.grouping.post.PostParty;
+import com.example.grouping.post.PostUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,6 +30,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Body;
+import retrofit2.http.Path;
 
 public class MypageMyratingActivity extends AppCompatActivity {
 
@@ -43,49 +51,39 @@ public class MypageMyratingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mypage_myrating);
 
-
-        Intent getIntent = getIntent();
-        String user_id =getIntent.getStringExtra("user_id");
-
-        recyclerView = (RecyclerView)findViewById(R.id.ratingRecyclerView);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
-        adapter =new MyPageRatingAdapter( getApplicationContext());
-        requestFriend(user_id);
-
-
-    }
-    //그냥 thread 돌리기
-    private void populateTable(String user_id) {
-        ProgressDialog mProgressDialog = ProgressDialog.show(getApplicationContext(),
-                "Please wait",
-                "Long operation starts...",
-                true);
-        new Thread() {
+        ImageButton backBtn = findViewById(R.id.backBtn);
+        backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
-                try {
-                    //user_id로 친구들 id 불러오기
-                    requestFriend(user_id);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mProgressDialog.dismiss();
-                        }
-                    });
-                } catch (final Exception ex) {
-                    Log.i("---","Exception in thread");
-                }
+            public void onClick(View view) {
+                finish();
             }
-        }.start();
-    }
-
-    private void requestFriend(String user_id) {
+        });
         retrofit = new Retrofit.Builder()
                 .baseUrl(URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         service = retrofit.create(APIService.class);
+
+        Intent getIntent = getIntent();
+        String user_id =getIntent.getStringExtra("user_id");
+        String ratedUser_id =getIntent.getStringExtra("ratedUser_id");
+        String name =getIntent.getStringExtra("name");
+        String image =getIntent.getStringExtra("image");
+        String hobby_id =getIntent.getStringExtra("hobby_id");
+        String attractive =getIntent.getStringExtra("attractive");
+
+        adapter = new MyPageRatingAdapter(user_id, getApplicationContext());
+        requestFriend(user_id);
+
+        if(!TextUtils.isEmpty(ratedUser_id)){
+            putRatedUser(ratedUser_id,name,image,hobby_id,attractive);
+        }
+
+    }
+
+
+    private void requestFriend(String user_id) {
+
 
         Call<ResponseBody> call_get = service.getFriend(user_id);
         call_get.enqueue(new Callback<ResponseBody>() {
@@ -105,8 +103,6 @@ public class MypageMyratingActivity extends AppCompatActivity {
                                     requestUser(friend_id);
                                 }
                             }
-
-                            recyclerView.setAdapter(adapter);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -129,7 +125,6 @@ public class MypageMyratingActivity extends AppCompatActivity {
     //여기서 id 하나하나가 다 String
     private void requestUser(String id) {
 
-
         Call<ResponseBody> call_get = service.getUser(id);
         call_get.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -141,6 +136,12 @@ public class MypageMyratingActivity extends AppCompatActivity {
                         try {
                             JSONArray arr = new JSONArray(result);
                             adapter.setArrayData(arr.getJSONObject(0));
+
+                            recyclerView = (RecyclerView)findViewById(R.id.ratingRecyclerView);
+
+                            recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
+
+                            recyclerView.setAdapter(adapter);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -160,4 +161,35 @@ public class MypageMyratingActivity extends AppCompatActivity {
             }
         });
     }
+    private void putRatedUser(String ratedUser_id, String name, String image, String hobby_id, String attractive) {
+        PostUser post = new PostUser(name, image, Integer.parseInt(hobby_id), "", 0, Integer.parseInt(attractive));
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl(URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        service = retrofit.create(APIService.class);
+        Call<PostUser> call_put = service.putUser(ratedUser_id, post);
+        call_put.enqueue(new Callback<PostUser>() {
+            @Override
+            public void onResponse(Call<PostUser> call, Response<PostUser> response) {
+                if (response.isSuccessful()) {
+                    String result = response.toString();
+                    Log.v(TAG, "result = " + result);
+                } else {
+                    Log.v(TAG, "error = " + String.valueOf(response.code()));
+                    Toast.makeText(getApplicationContext(), "error = " + String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PostUser> call, Throwable t) {
+                Log.v(TAG, "Fail");
+                Toast.makeText(getApplicationContext(), "Response Fail", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+    }
+
 }

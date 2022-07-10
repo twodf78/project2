@@ -45,6 +45,7 @@ public class FragmentMypage extends Fragment {
 
     public static ArrayList<JSONObject> jsonMypageArray =new ArrayList<>();
     Integer size = jsonMypageArray.size();
+
     public FragmentMypage() {
         super(R.layout.fragment_chatting);
     }
@@ -64,8 +65,19 @@ public class FragmentMypage extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        retrofit = new Retrofit.Builder()
+                .baseUrl(URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        service = retrofit.create(APIService.class);
+
+        final Context context = view.getContext();
+        ImageView imageView = view.findViewById(R.id.myPageImage);
+        TextView nameView = view.findViewById(R.id.myPageName);
+        TextView titleView = view.findViewById(R.id.myPageTitle);
+        TextView attractView = view.findViewById(R.id.myPageAttract);
+        TextView hobbyView = view.findViewById(R.id.myPageHobby);
         mypageWritingCardview=view.findViewById(R.id.mypageseemywriting);
-        mypageRatingCardview=view.findViewById(R.id.mypageseemyrating);
         mypageWritingCardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,6 +86,7 @@ public class FragmentMypage extends Fragment {
             }
         });
 
+        mypageRatingCardview=view.findViewById(R.id.mypageseemyrating);
         mypageRatingCardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,28 +99,12 @@ public class FragmentMypage extends Fragment {
                 startActivity(intent);
             }
         });
-        final Context context = view.getContext();
-        ImageView imageView = view.findViewById(R.id.myPageImage);
-        TextView nameView = view.findViewById(R.id.myPageName);
-        TextView titleView = view.findViewById(R.id.myPageTitle);
-        TextView attractView = view.findViewById(R.id.myPageAttract);
-        TextView hobbyView = view.findViewById(R.id.myPageHobby);
 
-        if(jsonMypageArray.size()==0){
-            populateTable();
+
+        if(jsonMypageArray.size() == 0){
+            request(titleView,nameView,attractView,hobbyView);
         }
 
-        if(jsonMypageArray.size() != 0) {
-            JSONObject jsonData = jsonMypageArray.get(0);
-            try {
-                nameView.setText(jsonData.getString("name"));
-                titleView.setText(jsonData.getString("title"));
-                attractView.setText(jsonData.getString("attractive"));
-                hobbyView.setText(jsonData.getString("hobby_id"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     private void populateTable() {
@@ -118,8 +115,8 @@ public class FragmentMypage extends Fragment {
         new Thread() {
             @Override
             public void run() {
+//                request();
                 try {
-                    request();
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -133,13 +130,7 @@ public class FragmentMypage extends Fragment {
         }.start();
     }
 
-    private void request() {
-        retrofit = new Retrofit.Builder()
-                .baseUrl(URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        service = retrofit.create(APIService.class);
-
+    private void request(TextView titleView,TextView nameView,TextView attractView,TextView hobbyView) {
         Call<ResponseBody> call_get = service.getUser("3");
         call_get.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -153,6 +144,10 @@ public class FragmentMypage extends Fragment {
                             for (int i=0; i<arr.length();i++){
                                 jsonMypageArray.add(arr.getJSONObject(i));
                             }
+                            nameView.setText(jsonMypageArray.get(0).getString("name"));
+                            attractView.setText(jsonMypageArray.get(0).getString("attractive"));
+                            hobbyView.setText(jsonMypageArray.get(0).getString("hobby_id"));
+                            requestTitle(titleView,jsonMypageArray.get(0).getString("attractive"));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -164,7 +159,36 @@ public class FragmentMypage extends Fragment {
                     Toast.makeText(getContext(), "error = " + String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
                 }
             }
-
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.v(TAG, "Fail");
+                Toast.makeText(getContext(), "Response Fail", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private void requestTitle(TextView titleView, String attractive) {
+        Call<ResponseBody> call_get = service.getTitle(attractive);
+        call_get.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    try {
+                        String result = response.body().string();
+                        Log.v(TAG, "result = " + result);
+                        try {
+                            JSONArray arrTitle = new JSONArray(result);
+                            titleView.setText(arrTitle.getJSONObject(0).getString("title_name"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Log.v(TAG, "error = " + String.valueOf(response.code()));
+                    Toast.makeText(getContext(), "error = " + String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                }
+            }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Log.v(TAG, "Fail");

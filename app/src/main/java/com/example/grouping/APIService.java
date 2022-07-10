@@ -35,6 +35,10 @@ public interface APIService {
     @GET("/get/friend")
     Call<ResponseBody> getFriend(@Query("data") String data);
 
+    @GET("/get/title")
+    Call<ResponseBody> getTitle(@Query("data") String data);
+
+
     @POST("/post/user")
     Call<PostUser> postUser(@Body PostUser post);
 
@@ -45,7 +49,7 @@ public interface APIService {
     Call<PostParty> postParty(@Body PostParty post);
 
 
-    @PUT("/put/user")
+    @PUT("/put/user/{id}")
     Call<PostUser> putUser(@Path("id") String id, @Body PostUser post);
 
     @PUT("/put/suggest")
