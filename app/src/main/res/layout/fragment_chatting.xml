@@ -7,24 +7,20 @@
     android:orientation="vertical"
     tools:context=".FragmentChatting">
 
-    <androidx.appcompat.widget.SearchView
-        android:layout_width="340dp"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="40dp"
-        app:iconifiedByDefault="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:queryBackground="@color/gray"
-        app:queryHint="검색어를 입력하세요." />
-
+        android:text="채팅"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:textSize="30dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chatRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         tools:listitem="@layout/home_itemlist_all" />
 
 

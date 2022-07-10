@@ -1,9 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ChattingRoomActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="660dp">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="bottom"
+        android:background="@color/lightblue0"
+        android:orientation="horizontal">
+        <EditText
+            android:layout_width="320dp"
+            android:layout_height="50dp"
+            android:background="@drawable/edittext_round_shape"
+            android:inputType="textMultiLine|textNoSuggestions"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="8dp"
+            android:hint="메시지를 입력하세요."
+            android:maxLength="120"
+            android:maxLines="5"
+            android:padding="6dp" />
+        <ImageButton
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:src="@drawable/sendmessage"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            android:backgroundTint="@color/lightblue0"
+            android:scaleType="centerCrop"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>

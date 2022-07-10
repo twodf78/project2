@@ -6,12 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <ImageButton
-        android:layout_width="50sp"
-        android:layout_height="50sp"
-        android:scaleType="fitXY"
-        android:layout_gravity="right"
-        android:src="@drawable/bell"/>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/framemainlayout"
@@ -36,12 +30,5 @@
         android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginBottom="100dp"
         app:srcCompat="@drawable/edit" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="TextView" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

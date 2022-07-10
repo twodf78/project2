@@ -9,6 +9,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -31,6 +33,7 @@ public class MypageMyratingActivity extends AppCompatActivity {
     MyPageRatingAdapter adapter;
     private static final String URL = "http://172.10.19.184:443/";
     private final String TAG = "request log";
+    Button completeRating;
 
     private Retrofit retrofit;
     private APIService service;
@@ -52,6 +55,15 @@ public class MypageMyratingActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         adapter =new MyPageRatingAdapter( getApplicationContext());
         requestFriend(user_id);
+
+        completeRating=findViewById(R.id.mypageCompleteRating);
+        completeRating.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MypageMyratingActivity.this, FragmentMypage.class);
+                startActivity(intent);
+            }
+        });
 
 
     }
