@@ -1,11 +1,15 @@
 package com.example.grouping;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -51,6 +55,20 @@ public class HomeRecyclerAdapterAll extends RecyclerView.Adapter<HomeRecyclerAda
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        holder.oneSuggest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), HomeSeeWriting.class);
+                try {
+                    intent.putExtra("suggest_id",jsonData.getString("id"));
+                    intent.putExtra("user_id",jsonData.getString("created_by"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                context.startActivity(intent.addFlags(FLAG_ACTIVITY_NEW_TASK));
+            }
+        });
     }
 
     @Override
@@ -66,6 +84,7 @@ public class HomeRecyclerAdapterAll extends RecyclerView.Adapter<HomeRecyclerAda
         private final TextView textTitle;
         TextView textContent;
         Button btn1,btn2,btn3;
+        LinearLayout oneSuggest;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             textContent= itemView.findViewById(R.id.homecardviewcontent);
@@ -73,6 +92,7 @@ public class HomeRecyclerAdapterAll extends RecyclerView.Adapter<HomeRecyclerAda
             btn1=itemView.findViewById(R.id.homeshortinfobtn1);
             btn2=itemView.findViewById(R.id.homeshortinfobtn2);
             btn3=itemView.findViewById(R.id.homeshortinfobtn3);
+            oneSuggest = itemView.findViewById(R.id.oneSuggest);
         }
     }
 }

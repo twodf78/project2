@@ -73,7 +73,7 @@ public class HomeWriteActivity extends AppCompatActivity {
         });
     }
     private void createPost() {
-        PostSuggest post = new PostSuggest(5, 7, 2, "asd",5);
+        PostSuggest post = new PostSuggest(5, 7, 2, content.getText().toString(),5);
         retrofit = new Retrofit.Builder()
                 .baseUrl(URL)
                 .addConverterFactory(GsonConverterFactory.create())

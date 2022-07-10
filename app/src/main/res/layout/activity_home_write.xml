@@ -104,11 +104,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="5dp">
+
                 <EditText
                     android:id="@+id/homeeditcontent"
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
-                    android:hint="내용을 입력하세요."/>
+                    android:hint="내용을 입력하세요." />
             </androidx.cardview.widget.CardView>
 
             <android.widget.Button

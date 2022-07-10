@@ -3,8 +3,12 @@ package com.example.grouping;
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageInstaller;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -27,7 +31,10 @@ import com.kakao.usermgmt.callback.LogoutResponseCallback;
 
 import org.jetbrains.annotations.Nullable;
 
-public class StartActivity extends AppCompatActivity {
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+public class    StartActivity extends AppCompatActivity {
     ImageButton kakaoLogin;
     TextView kakaoLogout;
 
@@ -38,7 +45,7 @@ public class StartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_start);
 
         viewInit();
-
+        getHashKey();
         // kakao
         if (AuthApiClient.getInstance().hasToken()) {
             UserApiClient.getInstance().accessTokenInfo((accessTokenInfo, error) -> {
@@ -132,5 +139,33 @@ public class StartActivity extends AppCompatActivity {
             }
             return null;
         });
+    }
+    private void getHashKey()
+    {
+        PackageInfo packageInfo = null;
+        try
+        {
+            packageInfo = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
+        }
+        catch (PackageManager.NameNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        if (packageInfo == null)
+            Log.e("KeyHash", "KeyHash:null");
+
+        for (Signature signature : packageInfo.signatures)
+        {
+            try
+            {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.e("KeyHash", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+            catch (NoSuchAlgorithmException e)
+            {
+                Log.e("KeyHash", "Unable to get MessageDigest. signature=" + signature, e);
+            }
+        }
     }
 }
