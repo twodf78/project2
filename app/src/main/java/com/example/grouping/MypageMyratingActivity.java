@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.grouping.post.PostParty;
@@ -39,6 +40,7 @@ public class MypageMyratingActivity extends AppCompatActivity {
     MyPageRatingAdapter adapter;
     private static final String URL = "http://172.10.19.184:443/";
     private final String TAG = "request log";
+    Button completeRating;
 
     private Retrofit retrofit;
     private APIService service;
@@ -58,6 +60,15 @@ public class MypageMyratingActivity extends AppCompatActivity {
                 finish();
             }
         });
+        completeRating=findViewById(R.id.mypageCompleteRating);
+        completeRating.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MypageMyratingActivity.this, FragmentMypage.class);
+                startActivity(intent);
+            }
+        });
+
         retrofit = new Retrofit.Builder()
                 .baseUrl(URL)
                 .addConverterFactory(GsonConverterFactory.create())
