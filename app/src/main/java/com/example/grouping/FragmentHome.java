@@ -54,10 +54,8 @@ public class FragmentHome extends Fragment {
     private Retrofit retrofit;
     private APIService service;
 
-    HomeRecyclerAdapterAll homeadapter;
     public static ArrayList<JSONObject> jsonHomeArray =new ArrayList<>();
-    RecyclerView recyclerView;
-
+    private static Integer compareVar = 0;
     public FragmentHome() {
         super(R.layout.fragment_home);
     }
@@ -79,17 +77,16 @@ public class FragmentHome extends Fragment {
 
 
         //recyclerview 만드는 부분
-        homeadapter = new HomeRecyclerAdapterAll(context);
+        HomeRecyclerAdapterAll homeAdapter = new HomeRecyclerAdapterAll(context);
         RecyclerView recyclerView = view.findViewById(R.id.homerecyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
         populateTable();
 
-
         for (int i=0; i<jsonHomeArray.size();i++){
-            homeadapter.setArrayData(jsonHomeArray.get(i));
+            homeAdapter.setArrayData(jsonHomeArray.get(i));
         }
-        recyclerView.setAdapter(homeadapter);
+        recyclerView.setAdapter(homeAdapter);
 
 
     }
@@ -125,10 +122,6 @@ public class FragmentHome extends Fragment {
 
         //이 아래 줄을 원하는 대로 바꾸면 된다.
         Call<ResponseBody> call_get = service.getSuggest();
-
-//        PostParty post = new PostParty(1, 2, "asdasds");
-//        Call<PostParty> call_post = service.postParty(post );
-
         call_get.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -140,8 +133,11 @@ public class FragmentHome extends Fragment {
                         try {
                             //result를 어떻게 쓸지는 여기서 결정.
                             JSONArray arr = new JSONArray(result);
-                            for (int i=0; i<arr.length();i++){
-                                jsonHomeArray.add(arr.getJSONObject(i));
+                            if (arr.length() != jsonHomeArray.size()){
+                                for (int i=compareVar; i<arr.length();i++){
+                                    jsonHomeArray.add(arr.getJSONObject(i));
+                                }
+                                compareVar = jsonHomeArray.size();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

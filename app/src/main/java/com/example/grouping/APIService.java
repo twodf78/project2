@@ -23,12 +23,17 @@ public interface APIService {
     @GET("/get/suggest")
     Call<ResponseBody> getSuggest();
 
+    @GET("/get/suggest/:id")
+    Call<ResponseBody> getSuggestById(@Query("data") String data);
+
     @GET("/get/party")
     Call<ResponseBody> getParty(@Query("data") String data);
 
     @GET("/get/hobby")
     Call<ResponseBody> getHobby(@Query("data") String data);
 
+    @GET("/get/friend")
+    Call<ResponseBody> getFriend(@Query("data") String data);
 
     @POST("/post/user")
     Call<PostUser> postUser(@Body PostUser post);

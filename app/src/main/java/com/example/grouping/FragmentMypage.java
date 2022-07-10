@@ -42,6 +42,7 @@ public class FragmentMypage extends Fragment {
 
     private Retrofit retrofit;
     private APIService service;
+
     public static ArrayList<JSONObject> jsonMypageArray =new ArrayList<>();
     Integer size = jsonMypageArray.size();
     public FragmentMypage() {
@@ -77,6 +78,11 @@ public class FragmentMypage extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), MypageMyratingActivity.class);
+                try {
+                    intent.putExtra("user_id", jsonMypageArray.get(0).getString("id"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 startActivity(intent);
             }
         });
