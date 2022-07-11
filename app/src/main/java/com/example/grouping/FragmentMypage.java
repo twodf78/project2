@@ -1,5 +1,7 @@
 package com.example.grouping;
 
+import static com.example.grouping.MainActivity.current_user_id;
+
 import android.content.Intent;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -50,8 +52,7 @@ public class FragmentMypage extends Fragment {
     private Retrofit retrofit;
     private APIService service;
 
-    public static ArrayList<JSONObject> jsonMypageArray =new ArrayList<>();
-    Integer size = jsonMypageArray.size();
+
     public FragmentMypage() {
         super(R.layout.fragment_chatting);
     }
@@ -71,6 +72,18 @@ public class FragmentMypage extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        retrofit = new Retrofit.Builder()
+                .baseUrl(URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        service = retrofit.create(APIService.class);
+
+        final Context context = view.getContext();
+        ImageView imageView = view.findViewById(R.id.myPageImage);
+        TextView nameView = view.findViewById(R.id.myPageName);
+        TextView titleView = view.findViewById(R.id.myPageTitle);
+        TextView attractView = view.findViewById(R.id.myPageAttract);
+        TextView hobbyView = view.findViewById(R.id.myPageHobby);
         mypageWritingCardview=view.findViewById(R.id.mypageseemywriting);
         mypageRatingCardview=view.findViewById(R.id.mypageseemyrating);
         mypageLogoutBtn=view.findViewById(R.id.kakaoLogoutbtn);
@@ -83,6 +96,7 @@ public class FragmentMypage extends Fragment {
             }
         });
 
+
         mypageSelectHobbyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,13 +105,7 @@ public class FragmentMypage extends Fragment {
             }
         });
 
-        //StartActivity에서 데이터 주면 여기서 데이터 받기?
-//        Intent intent = getIntent();
-//        strNickname = intent.getStringExtra("name");
-//        strProfile = intent.getStringExtra("profile");
-//
-//        tvNickname.setText(strNickname);
-//        tvProfile.setText(strProfile);
+
 
 
 
@@ -115,8 +123,6 @@ public class FragmentMypage extends Fragment {
                         startActivity(intent);
                     }
                 });
-
-
             }
         });
 
@@ -124,37 +130,13 @@ public class FragmentMypage extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), MypageMyratingActivity.class);
-                try {
-                    intent.putExtra("user_id", jsonMypageArray.get(0).getString("id"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
                 startActivity(intent);
             }
         });
 
-        final Context context = view.getContext();
-        ImageView imageView = view.findViewById(R.id.myPageImage);
-        TextView nameView = view.findViewById(R.id.myPageName);
-        TextView titleView = view.findViewById(R.id.myPageTitle);
-        TextView attractView = view.findViewById(R.id.myPageAttract);
-        TextView hobbyView = view.findViewById(R.id.myPageHobby);
 
-        if(jsonMypageArray.size()==0){
-            populateTable();
-        }
+        request(titleView,nameView,attractView,hobbyView);
 
-        if(jsonMypageArray.size() != 0) {
-            JSONObject jsonData = jsonMypageArray.get(0);
-            try {
-                nameView.setText(jsonData.getString("name"));
-                titleView.setText(jsonData.getString("title"));
-                attractView.setText(jsonData.getString("attractive"));
-                hobbyView.setText(jsonData.getString("hobby_id"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     private void populateTable() {
@@ -166,7 +148,7 @@ public class FragmentMypage extends Fragment {
             @Override
             public void run() {
                 try {
-                    request();
+                    //                request();
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -180,14 +162,8 @@ public class FragmentMypage extends Fragment {
         }.start();
     }
 
-    private void request() {
-        retrofit = new Retrofit.Builder()
-                .baseUrl(URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        service = retrofit.create(APIService.class);
-
-        Call<ResponseBody> call_get = service.getUser("3");
+    private void request(TextView titleView,TextView nameView,TextView attractView,TextView hobbyView) {
+        Call<ResponseBody> call_get = service.getUser(current_user_id);
         call_get.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -197,9 +173,40 @@ public class FragmentMypage extends Fragment {
                         Log.v(TAG, "result = " + result);
                         try {
                             JSONArray arr = new JSONArray(result);
-                            for (int i=0; i<arr.length();i++){
-                                jsonMypageArray.add(arr.getJSONObject(i));
-                            }
+                            nameView.setText(arr.getJSONObject(0).getString("name"));
+                            attractView.setText(arr.getJSONObject(0).getString("attractive"));
+                            hobbyView.setText(arr.getJSONObject(0).getString("hobby_id"));
+                            requestTitle(titleView,arr.getJSONObject(0).getString("attractive"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Log.v(TAG, "error = " + String.valueOf(response.code()));
+                    Toast.makeText(getContext(), "error = " + String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.v(TAG, "Fail");
+                Toast.makeText(getContext(), "Response Fail", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private void requestTitle(TextView titleView, String attractive) {
+        Call<ResponseBody> call_get = service.getTitle(attractive);
+        call_get.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    try {
+                        String result = response.body().string();
+                        Log.v(TAG, "result = " + result);
+                        try {
+                            JSONArray arrTitle = new JSONArray(result);
+                            titleView.setText(arrTitle.getJSONObject(0).getString("title_name"));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".HomeWriteActivity">
+    tools:context=".HomeWriteActivity"
+    android:orientation="vertical">
 
     <ImageView
         android:id="@+id/upperimage"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:src="@drawable/meeting" />
+        android:src="@drawable/meeting"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -45,13 +45,13 @@
                         android:src="@drawable/field" />
 
                     <TextView
-                        android:id="@+id/homefieldspinnertext"
+                        android:id="@+id/homeHobbyspinnertext"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="   분야           " />
 
                     <Spinner
-                        android:id="@+id/homefieldspinner"
+                        android:id="@+id/homeHobbyspinner"
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:entries="@array/분야" />
@@ -80,13 +80,13 @@
                         android:src="@drawable/map" />
 
                     <TextView
-                        android:id="@+id/homeregionspinnertext"
+                        android:id="@+id/homeLocationSpinnertext"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="   지역           " />
 
                     <Spinner
-                        android:id="@+id/homeregionspinner"
+                        android:id="@+id/homeLocationSpinner"
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:entries="@array/지역" />
@@ -312,6 +312,7 @@
 
 
     </ScrollView>
+
 
 
 </LinearLayout>

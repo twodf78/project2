@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.grouping.post.PostUser;
 import com.kakao.auth.AuthType;
 import com.kakao.auth.Session;
 import com.kakao.network.ErrorResult;
@@ -34,8 +35,19 @@ import org.jetbrains.annotations.Nullable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class    StartActivity extends AppCompatActivity {
     ImageButton kakaoLogin;
+    TextView kakaoLogout;
+    private static final String URL = "http://172.10.19.184:443/";
+
+    private Retrofit retrofit;
+    private APIService service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +55,6 @@ public class    StartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_start);
 
         viewInit();
-        getHashKey();
         // kakao
         if (AuthApiClient.getInstance().hasToken()) {
             UserApiClient.getInstance().accessTokenInfo((accessTokenInfo, error) -> {
@@ -122,42 +133,47 @@ public class    StartActivity extends AppCompatActivity {
                 }
                 Account kakaoUserAccount = user.getKakaoAccount();
                 Profile kakaoUser = kakaoUserAccount.getProfile();
+
                 //String type으로 해서 putExtra 해서 intent로 값 넘겨주기
-//                userName = kakaoUser.getNickname();
-//                userProfileUrl = kakaoUser.getProfileImageUrl();
-//                userId = "" + user.getId();
+                String userName = kakaoUser.getNickname();
+                String userProfileUrl = kakaoUser.getProfileImageUrl();
+                String userId = "" + user.getId();
                 Intent intent = new Intent(StartActivity.this, MainActivity.class);
+                intent.putExtra("current_user_id", userId);
+                intent.putExtra("current_user_name", userName);
+                intent.putExtra("current_user_image",userProfileUrl);
+                postUser(userId, userName, userProfileUrl);
                 startActivity(intent);
             }
             return null;
         });
     }
-    private void getHashKey()
-    {
-        PackageInfo packageInfo = null;
-        try
-        {
-            packageInfo = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
-        }
-        catch (PackageManager.NameNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-        if (packageInfo == null)
-            Log.e("KeyHash", "KeyHash:null");
+    public void postUser(String userId, String userName,String userProfileUrl){
+        PostUser post = new PostUser(userId,userName, userProfileUrl, 1,  50);
 
-        for (Signature signature : packageInfo.signatures)
-        {
-            try
-            {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                Log.e("KeyHash", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+        retrofit = new Retrofit.Builder()
+                .baseUrl(URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        service = retrofit.create(APIService.class);
+        Call<PostUser> call_put = service.postUser( post);
+        call_put.enqueue(new Callback<PostUser>() {
+            @Override
+            public void onResponse(Call<PostUser> call, Response<PostUser> response) {
+                if (response.isSuccessful()) {
+                    String result = response.toString();
+                    Log.v(TAG, "result = " + result);
+                } else {
+                    Log.v(TAG, "error = " + String.valueOf(response.code()));
+                    Toast.makeText(getApplicationContext(), "error = " + String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                }
             }
-            catch (NoSuchAlgorithmException e)
-            {
-                Log.e("KeyHash", "Unable to get MessageDigest. signature=" + signature, e);
+
+            @Override
+            public void onFailure(Call<PostUser> call, Throwable t) {
+                Log.v(TAG, "Fail");
+                Toast.makeText(getApplicationContext(), "Response Fail", Toast.LENGTH_SHORT).show();
             }
-        }
+        });
     }
 }

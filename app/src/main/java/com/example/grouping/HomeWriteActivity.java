@@ -1,5 +1,7 @@
 package com.example.grouping;
 
+import static com.example.grouping.MainActivity.current_user_id;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -34,6 +36,9 @@ public class HomeWriteActivity extends AppCompatActivity {
     private APIService service;
 
     EditText content;
+    EditText title;
+    Spinner location;
+    Spinner hobby;
 
 
     @Override
@@ -41,12 +46,12 @@ public class HomeWriteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_write);
 
-        final TextView textView = findViewById(R.id.homefieldspinnertext);
-        EditText title = findViewById(R.id.homeedittitle);
+        title = findViewById(R.id.homeedittitle);
         content = findViewById(R.id.homeeditcontent);
-        Spinner spinner = findViewById(R.id.homefieldspinner);
+        hobby = findViewById(R.id.homeHobbyspinner);
+        location = findViewById(R.id.homeLocationSpinner);
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        hobby.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             }
@@ -70,7 +75,8 @@ public class HomeWriteActivity extends AppCompatActivity {
                 else{
                     Toast.makeText(getApplicationContext(), "생성한 스터디가 성공적으로 업로딩 되었습니다.", Toast.LENGTH_SHORT).show();
                     createPost();
-                    finish();
+                    Intent intent = new Intent(getApplicationContext(), MypageMyratingActivity.class);
+                    startActivity(intent);
 
                 }
 
@@ -99,7 +105,7 @@ public class HomeWriteActivity extends AppCompatActivity {
     }
 
     private void createPost() {
-        PostSuggest post = new PostSuggest(5, 7, 2, content.getText().toString(),5);
+        PostSuggest post = new PostSuggest("2022-07-09 11:00:00", "2022-07-09 12:00:00", current_user_id, title.getText().toString(), content.getText().toString(),"서울 부산", 5,1, 5);
         retrofit = new Retrofit.Builder()
                 .baseUrl(URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -115,21 +121,10 @@ public class HomeWriteActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "error = " + String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
                     return;
                 }
-
                 PostSuggest postResponse = response.body();
-
-                String content = "";
-                content += "Code : " + response.code() + "\n";
-//                content += "Id: " + ((String) postResponse.getStartTime()) + "\n";
-//                content += "User Id: " + postResponse.getEndTIME() + "\n";
-//                content += "Title: " + postResponse.getCreated_by() + "\n";
-//                content += "Text: " + postResponse.getHobby_id() + "\n";
-//                content += "Text: " + postResponse.getContent() + "\n";
-
-                Toast.makeText(getApplicationContext(), content, Toast.LENGTH_SHORT).show();
-
+                String user_id = postResponse.getCreated_by();
+                Toast.makeText(getApplicationContext(), response.code(), Toast.LENGTH_SHORT).show();
             }
-
             @Override
             public void onFailure(Call<PostSuggest> call, Throwable t) {
                 Log.v(TAG, "Fail");

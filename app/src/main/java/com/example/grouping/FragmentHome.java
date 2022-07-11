@@ -50,12 +50,12 @@ public class FragmentHome extends Fragment {
 
     private final String URL = "http://172.10.19.184:443/";
     private final String TAG = "request log";
-
     private Retrofit retrofit;
     private APIService service;
 
-    public static ArrayList<JSONObject> jsonHomeArray =new ArrayList<>();
-    private static Integer compareVar = 0;
+    RecyclerView recyclerView;
+    HomeRecyclerAdapterAll homeAdapter;
+
     public FragmentHome() {
         super(R.layout.fragment_home);
     }
@@ -74,19 +74,18 @@ public class FragmentHome extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         final Context context = view.getContext();
-
+        retrofit = new Retrofit.Builder()
+                .baseUrl(URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        service = retrofit.create(APIService.class);
 
         //recyclerview 만드는 부분
-        HomeRecyclerAdapterAll homeAdapter = new HomeRecyclerAdapterAll(context);
-        RecyclerView recyclerView = view.findViewById(R.id.homerecyclerview);
+        homeAdapter = new HomeRecyclerAdapterAll(context);
+        recyclerView = view.findViewById(R.id.homerecyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-        populateTable();
-
-        for (int i=0; i<jsonHomeArray.size();i++){
-            homeAdapter.setArrayData(jsonHomeArray.get(i));
-        }
-        recyclerView.setAdapter(homeAdapter);
+        request();
 
 
     }
@@ -114,11 +113,7 @@ public class FragmentHome extends Fragment {
     }
 
     private void request() {
-        retrofit = new Retrofit.Builder()
-                .baseUrl(URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        service = retrofit.create(APIService.class);
+
 
         //이 아래 줄을 원하는 대로 바꾸면 된다.
         Call<ResponseBody> call_get = service.getSuggest();
@@ -133,12 +128,11 @@ public class FragmentHome extends Fragment {
                         try {
                             //result를 어떻게 쓸지는 여기서 결정.
                             JSONArray arr = new JSONArray(result);
-                            if (arr.length() != jsonHomeArray.size()){
-                                for (int i=compareVar; i<arr.length();i++){
-                                    jsonHomeArray.add(arr.getJSONObject(i));
-                                }
-                                compareVar = jsonHomeArray.size();
+                            for (int i=0; i<arr.length();i++){
+                                homeAdapter.setArrayData(arr.getJSONObject(i));
                             }
+                            recyclerView.setAdapter(homeAdapter);
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

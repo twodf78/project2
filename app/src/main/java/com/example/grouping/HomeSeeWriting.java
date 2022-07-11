@@ -1,5 +1,7 @@
 package com.example.grouping;
 
+import static com.example.grouping.MainActivity.current_user_id;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,6 +24,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.math.BigInteger;
+import java.util.ArrayList;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -36,28 +40,37 @@ public class HomeSeeWriting extends AppCompatActivity {
     TextView oneSuggestArea;
     TextView oneSuggestLocation;
     TextView oneSuggestContent;
-    TextView oneSuggestName;
+    TextView oneSuggestTitle;
 
     ImageView oneUserImage;
     TextView oneUserAttract;
     TextView oneUserTitle;
+    TextView oneUserName;
 
     TextView oneSuggestJoinBtn;
     JSONArray arrSuggest;
     JSONArray arrUser;
+    JSONArray arrTitle;
 
     private static final String URL = "http://172.10.19.184:443/";
     private final String TAG = "request log";
 
     private Retrofit retrofit;
     private APIService service;
+    ArrayList<Integer> suggest_id_of_party;
+    String currentSuggestId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        retrofit = new Retrofit.Builder()
+                .baseUrl(URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        service = retrofit.create(APIService.class);
 
         Intent getIntent = getIntent();
-        String currentSuggestId = getIntent.getStringExtra("suggest_id");
+        currentSuggestId = getIntent.getStringExtra("suggest_id");
         String createdUserId = getIntent.getStringExtra("user_id");
 
         viewInit();
@@ -65,7 +78,7 @@ public class HomeSeeWriting extends AppCompatActivity {
         oneSuggestJoinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestPostParty(createdUserId, currentSuggestId, "안녕안녕");
+                requestGetParty();
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
             }
@@ -73,63 +86,11 @@ public class HomeSeeWriting extends AppCompatActivity {
         requestSuggest(currentSuggestId);
         requestUser(createdUserId);
 
-
-
-//        new AlertDialog.Builder(HomeSeeWriting.this)
-//                .setView(linear)
-//                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int whichButton) {
-//                        EditText applycontent = (EditText) linear.findViewById(R.id.homeStudyApplyDialogEdittext);
-//                        String value = applycontent.getText().toString(); //GET suggest에 어떤 거..? 간단 지원 내용이 DB에도 들어가야할 듯
-//                        dialog.dismiss();
-//                    }
-//                })
-//                .setNegativeButton("취소", new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int whichButton) {
-//                        dialog.dismiss();
-//                    }
-//                })
-//                .show();
     }
 
-    private void requestPostParty(String createdUserId, String currentSuggestId, String comment) {
-        PostParty post =new PostParty(Integer.parseInt(createdUserId), Integer.parseInt(currentSuggestId), comment);
-
-        retrofit = new Retrofit.Builder()
-                .baseUrl(URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        service = retrofit.create(APIService.class);
-        Call<PostParty> call_post = service.postParty(post);
-        call_post.enqueue(new Callback<PostParty>() {
-            @Override
-            public void onResponse(Call<PostParty> call, Response<PostParty> response) {
-                if (response.isSuccessful()) {
-                    String result = response.toString();
-                    Log.v(TAG, "result = " + result);
-                } else {
-                    Log.v(TAG, "error = " + String.valueOf(response.code()));
-                    Toast.makeText(getApplicationContext(), "error = " + String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<PostParty> call, Throwable t) {
-                Log.v(TAG, "Fail");
-                Toast.makeText(getApplicationContext(), "Response Fail", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }
 
 
     private void requestSuggest(String suggest_id) {
-        retrofit = new Retrofit.Builder()
-                .baseUrl(URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        service = retrofit.create(APIService.class);
-
         Call<ResponseBody> call_get = service.getSuggestById(suggest_id);
         call_get.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -152,7 +113,6 @@ public class HomeSeeWriting extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "error = " + String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
                 }
             }
-
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Log.v(TAG, "Fail");
@@ -161,12 +121,6 @@ public class HomeSeeWriting extends AppCompatActivity {
         });
     }
     private void requestUser(String user_id) {
-        retrofit = new Retrofit.Builder()
-                .baseUrl(URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        service = retrofit.create(APIService.class);
-
         Call<ResponseBody> call_get = service.getUser(user_id);
         call_get.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -178,6 +132,8 @@ public class HomeSeeWriting extends AppCompatActivity {
                         try {
                             arrUser = new JSONArray(result);
                             setUserView();
+                            requestTitle(arrUser.getJSONObject(0).getString("attractive"));
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -189,7 +145,6 @@ public class HomeSeeWriting extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "error = " + String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
                 }
             }
-
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Log.v(TAG, "Fail");
@@ -197,27 +152,129 @@ public class HomeSeeWriting extends AppCompatActivity {
             }
         });
     }
+    private void requestTitle(String attractive) {
+        Call<ResponseBody> call_get = service.getTitle(attractive);
+        call_get.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    try {
+                        String result = response.body().string();
+                        Log.v(TAG, "result = " + result);
+                        try {
+                            arrTitle = new JSONArray(result);
+                            oneUserTitle.setText(arrTitle.getJSONObject(0).getString("title_name"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Log.v(TAG, "error = " + String.valueOf(response.code()));
+                    Toast.makeText(getApplicationContext(), "error = " + String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.v(TAG, "Fail");
+                Toast.makeText(getApplicationContext(), "Response Fail", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private void requestGetParty() {
 
+        Call<ResponseBody> call_get = service.getParty(current_user_id);
+        call_get.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    try {
+                        String result = response.body().string();
+                        Log.v(TAG, "result = " + result);
+                        try {
+                            JSONArray arr = new JSONArray(result);
+                            suggest_id_of_party=new ArrayList<Integer>();
+                            Boolean alreadyAdded = false;
+                            for(int i= 1;i<=5;i++){
+                                String temp = arr.getJSONObject(0).getString("suggest_" + String.valueOf(i)+"_id");
+                                if(Integer.parseInt(temp) >0){
+                                    suggest_id_of_party.add(Integer.parseInt(temp));
+                                }
+                                else if(Integer.parseInt(temp) == 0 && !alreadyAdded){
+                                    suggest_id_of_party.add(Integer.parseInt(currentSuggestId));
+                                    alreadyAdded = true;
+                                }
+                                else{
+                                    suggest_id_of_party.add(0);
+                                }
+                            }
+                            if(!alreadyAdded){
+                              Toast.makeText(getApplicationContext(), "최대 5개까지의 party 밖에 생성을 하지 못 합니다." , Toast.LENGTH_SHORT);
+                            } else{
+                                requestPutParty();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Log.v(TAG, "error = " + String.valueOf(response.code()));
+                    Toast.makeText(getApplicationContext(), "error = " + String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.v(TAG, "Fail");
+                Toast.makeText(getApplicationContext(), "Response Fail", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private void requestPutParty() {
+        PostParty post =new PostParty(current_user_id,suggest_id_of_party.get(0),suggest_id_of_party.get(1),suggest_id_of_party.get(2),suggest_id_of_party.get(3),suggest_id_of_party.get(4) );
+        Call<PostParty> call_post = service.putParty(current_user_id, post);
+        call_post.enqueue(new Callback<PostParty>() {
+            @Override
+            public void onResponse(Call<PostParty> call, Response<PostParty> response) {
+                if (response.isSuccessful()) {
+                    String result = response.toString();
+                    Log.v(TAG, "result = " + result);
+                    Toast.makeText(getApplicationContext(), "party 추가 완료" , Toast.LENGTH_SHORT);
+                } else {
+                    Log.v(TAG, "error = " + String.valueOf(response.code()));
+                    Toast.makeText(getApplicationContext(), "error = " + String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<PostParty> call, Throwable t) {
+                Log.v(TAG, "Fail");
+                Toast.makeText(getApplicationContext(), "Response Fail", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
     private void viewInit() {
         setContentView(R.layout.activity_home_see_writing);
 
-        oneUserImage = findViewById(R.id.oneSuggestImage);
-        oneUserTitle = findViewById(R.id.oneSuggestTitle);
-        oneUserAttract = findViewById(R.id.oneSuggestAttract);
+        oneUserImage = findViewById(R.id.oneUserImage);
+        oneUserTitle = findViewById(R.id.oneUserTitle);
+        oneUserAttract = findViewById(R.id.oneUserAttract);
+        oneUserName = findViewById(R.id.oneUserName);
 
         oneSuggestArea = findViewById(R.id.oneSuggestArea);
         oneSuggestLocation = findViewById(R.id.oneSuggestLocation);
         oneSuggestContent = findViewById(R.id.oneSuggestContent);
-        oneSuggestName = findViewById(R.id.oneSuggestName);
+        oneSuggestTitle = findViewById(R.id.oneSuggestTitle);
 
         oneSuggestJoinBtn = findViewById(R.id.oneSuggestJoinBtn);
     }
     private void setSuggestView() {
         if (arrSuggest != null) {
             try {
-                oneSuggestArea.setText(arrSuggest.getJSONObject(0).getString("startTime"));
-                oneSuggestLocation.setText(arrSuggest.getJSONObject(0).getString("endTIME"));
-                oneSuggestName.setText(arrSuggest.getJSONObject(0).getString("created_by"));
+                oneSuggestArea.setText(arrSuggest.getJSONObject(0).getString("hobby_id"));
+                oneSuggestLocation.setText(arrSuggest.getJSONObject(0).getString("location"));
+                oneSuggestTitle.setText(arrSuggest.getJSONObject(0).getString("Title"));
                 oneSuggestContent.setText(arrSuggest.getJSONObject(0).getString("content"));
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -229,9 +286,9 @@ public class HomeSeeWriting extends AppCompatActivity {
 
         if(arrUser!=null){
             try {
-//                oneUserImage.setText(arrSuggest.getJSONObject(0).getString("startTime"));
+                //                oneUserImage.setText(arrSuggest.getJSONObject(0).getString("image"));
                 oneUserAttract.setText(arrUser.getJSONObject(0).getString("attractive"));
-                oneUserTitle.setText(arrUser.getJSONObject(0).getString("name"));
+                oneUserName.setText(arrUser.getJSONObject(0).getString("name"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
