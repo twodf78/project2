@@ -13,67 +13,6 @@
         android:layout_height="200dp"
         android:src="@drawable/meeting"/>
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:layout_margin="10dp">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal">
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginLeft="5dp"
-                android:src="@drawable/field"/>
-            <TextView
-                android:id="@+id/homeHobbyspinnertext"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="   분야   "/>
-            <Spinner
-                android:id="@+id/homeHobbyspinner"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:entries="@array/분야"/>
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:layout_margin="10dp">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginTop="5dp">
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/map"
-                android:layout_marginLeft="5dp"/>
-            <TextView
-                android:id="@+id/homeLocationSpinnertext"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="   지역   "/>
-            <Spinner
-                android:id="@+id/homeLocationSpinner"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:entries="@array/지역"/>
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/black"/>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -83,20 +22,271 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="2dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="5dp"
+                        android:src="@drawable/field" />
+
+                    <TextView
+                        android:id="@+id/homeHobbyspinnertext"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="   분야           " />
+
+                    <Spinner
+                        android:id="@+id/homeHobbyspinner"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:entries="@array/분야" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="2dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="5dp"
+                        android:src="@drawable/map" />
+
+                    <TextView
+                        android:id="@+id/homeLocationSpinnertext"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="   지역           " />
+
+                    <Spinner
+                        android:id="@+id/homeLocationSpinner"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:entries="@array/지역" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="2dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="5dp"
+                        android:src="@drawable/start" />
+
+                    <TextView
+                        android:id="@+id/homestarttimespinnertext"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="   시작 시간      " />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <Button
+                            android:id="@+id/homeStartDateBtn"
+                            android:layout_width="100dp"
+                            android:layout_height="40dp"
+                            android:onClick="onBtnClicked3"
+                            android:text="날짜 선택" />
+
+                        <Button
+                            android:id="@+id/homeStartTimeBtn"
+                            android:layout_width="100dp"
+                            android:layout_height="40dp"
+                            android:onClick="onBtnClicked"
+                            android:text="시간 선택" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/homeStartDateTextView"
+                            android:layout_width="180dp"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="4dp"/>
+
+                        <TextView
+                            android:id="@+id/homeStartTimeTextView"
+                            android:layout_width="100dp"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="10dp"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="2dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="5dp"
+                        android:src="@drawable/finish" />
+
+                    <TextView
+                        android:id="@+id/homefinishtimespinnertext"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="   끝나는 시간  " />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <Button
+                            android:id="@+id/homeFinishDateBtn"
+                            android:layout_width="100dp"
+                            android:layout_height="40dp"
+                            android:onClick="onBtnClicked4"
+                            android:text="날짜 선택" />
+
+                        <Button
+                            android:id="@+id/homeFinishTimeBtn"
+                            android:layout_width="100dp"
+                            android:layout_height="40dp"
+                            android:onClick="onBtnClicked2"
+                            android:text="시간 선택" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/homeFinishDateTextView"
+                            android:layout_width="180dp"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="4dp"/>
+
+                        <TextView
+                            android:id="@+id/homeFinishTimeTextView"
+                            android:layout_width="100dp"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="10dp"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="2dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="5dp"
+                        android:src="@drawable/people" />
+
+                    <TextView
+                        android:id="@+id/homepeoplespinnertext"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="   수용 인원    " />
+
+                    <Spinner
+                        android:id="@+id/homepeoplespinner"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:entries="@array/수용인원" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/black" />
+
+
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp">
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="5dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+
                     <EditText
                         android:id="@+id/homeedittitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="1dp"
-                        android:hint="제목을 입력하세요."/>
+                        android:hint="제목을 입력하세요." />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -117,7 +307,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="글쓰기"/>
+                android:text="글쓰기" />
         </LinearLayout>
 
 

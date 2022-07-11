@@ -43,21 +43,4 @@
         android:layout_marginTop="50dp"
         android:background="@drawable/kakaologin" />
 
-    <TextView
-        android:id="@+id/kakaoLogout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textSize="13dp"
-        android:layout_marginTop="15dp"
-        android:text="로그아웃하기" />
-
-    <View
-        android:layout_width="70dp"
-        android:layout_height="1dp"
-        android:layout_marginTop="0.1dp"
-        android:layout_gravity="center"
-        android:background="@color/black" />
-
-
 </LinearLayout>

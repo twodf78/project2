@@ -14,6 +14,7 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -51,6 +52,8 @@ import retrofit2.Retrofit;
 public class MainActivity extends AppCompatActivity {
     private static final String URL = "http://172.10.19.184:443/";
     private Socket socket;
+
+    FragmentHome fragmentHome;
 
     public static String current_user_id;
 
@@ -123,6 +126,9 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
         navigation.setOnItemReselectedListener(null);
+
+//        FragmentTransaction transaction = fragmentManager.beginTransaction();
+//        transaction.replace(R.id.framemainlayout, fragmentHome).commitAllowingStateLoss();
 
     }
 

@@ -3,8 +3,11 @@ package com.example.grouping;
 import static com.example.grouping.MainActivity.current_user_id;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.grouping.post.PostSuggest;
@@ -35,6 +39,7 @@ public class HomeWriteActivity extends AppCompatActivity {
     EditText title;
     Spinner location;
     Spinner hobby;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +83,27 @@ public class HomeWriteActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void onBtnClicked3(View v) {
+        HomeDatePickerFragment newFragment = new HomeDatePickerFragment();
+        newFragment.show(getFragmentManager(),"datePicker");
+    }
+
+    public void onBtnClicked4(View v) {
+        HomeDatePickerFragment2 newFragment = new HomeDatePickerFragment2();
+        newFragment.show(getFragmentManager(),"datePicker");
+    }
+
+    public void onBtnClicked(View v){
+        HomeTimePickerFragment newAlertFragment = new HomeTimePickerFragment();
+        newAlertFragment.show(getFragmentManager(), "TimePicker");
+    }
+
+    public void onBtnClicked2(View v){
+        HomeTimePickerFragment2 newAlertFragment2 = new HomeTimePickerFragment2();
+        newAlertFragment2.show(getFragmentManager(), "TimePicker");
+    }
+
     private void createPost() {
         PostSuggest post = new PostSuggest("2022-07-09 11:00:00", "2022-07-09 12:00:00", current_user_id, title.getText().toString(), content.getText().toString(),"서울 부산", 5,1, 5);
         retrofit = new Retrofit.Builder()

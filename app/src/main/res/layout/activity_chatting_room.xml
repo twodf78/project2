@@ -7,9 +7,22 @@
     android:orientation="vertical"
     tools:context=".ChattingRoomActivity">
 
+    <ImageButton
+        android:id="@+id/chattingRoomBackbtn"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/white"
+        android:scaleType="centerCrop"
+        android:src="@drawable/back"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="660dp">
+        android:layout_height="610dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -21,6 +34,7 @@
         android:background="@color/lightblue0"
         android:orientation="horizontal">
         <EditText
+            android:id="@+id/chattingWriteMessage"
             android:layout_width="320dp"
             android:layout_height="50dp"
             android:background="@drawable/edittext_round_shape"
