@@ -68,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
             current_user_id = intent.getStringExtra("current_user_id");
         }
 
-        textView = findViewById(R.id.textView);
         try {
             socket = IO.socket(URL);
             socket.on(Socket.EVENT_CONNECT, onMessage);
