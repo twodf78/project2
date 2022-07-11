@@ -43,6 +43,7 @@ public class HomeSeeWriting extends AppCompatActivity {
     TextView oneSuggestLocation;
     TextView oneSuggestContent;
     TextView oneSuggestTitle;
+    TextView oneSuggestStartTime, oneSuggestFinishTime, oneSuggestCurrent, oneSuggestCapacity;
 
     ImageView oneUserImage;
     TextView oneUserAttract;
@@ -54,7 +55,7 @@ public class HomeSeeWriting extends AppCompatActivity {
     JSONArray arrUser;
     JSONArray arrTitle;
 
-    private static final String URL = "http://172.10.19.184:443/";
+    private static final String URL = "http://192.249.19.184:443/";
     private final String TAG = "request log";
 
     private Retrofit retrofit;
@@ -301,6 +302,10 @@ public class HomeSeeWriting extends AppCompatActivity {
         oneUserAttract = findViewById(R.id.oneUserAttract);
         oneUserName = findViewById(R.id.oneUserName);
 
+        oneSuggestStartTime = findViewById(R.id.oneSuggestStartTime);
+        oneSuggestFinishTime = findViewById(R.id.oneSuggestStartTime);
+        oneSuggestCurrent = findViewById(R.id.oneSuggestPeopleNow);
+        oneSuggestCapacity = findViewById(R.id.oneSuggestPeopleAll);
         oneSuggestArea = findViewById(R.id.oneSuggestArea);
         oneSuggestLocation = findViewById(R.id.oneSuggestLocation);
         oneSuggestContent = findViewById(R.id.oneSuggestContent);
@@ -315,6 +320,7 @@ public class HomeSeeWriting extends AppCompatActivity {
                 oneSuggestLocation.setText(arrSuggest.getJSONObject(0).getString("location"));
                 oneSuggestTitle.setText(arrSuggest.getJSONObject(0).getString("Title"));
                 oneSuggestContent.setText(arrSuggest.getJSONObject(0).getString("content"));
+
                 if(arrSuggest.getJSONObject(0).getString("capacity").equals(arrSuggest.getJSONObject(0).getString("current"))){
                     ableToJoin = false;
                 }else{

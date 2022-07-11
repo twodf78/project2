@@ -50,7 +50,7 @@ import io.socket.emitter.Emitter;
 import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String URL = "http://172.10.19.184:443/";
+    private static final String URL = "http://192.249.19.184:443/";
     private Socket socket;
 
     FragmentHome fragmentHome;

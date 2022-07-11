@@ -48,7 +48,7 @@ import retrofit2.http.Body;
 
 public class FragmentHome extends Fragment {
 
-    private final String URL = "http://172.10.19.184:443/";
+    private final String URL = "http://192.249.19.184:443/";
     private final String TAG = "request log";
     private Retrofit retrofit;
     private APIService service;

@@ -19,10 +19,9 @@ public class ChattingRoomActivity extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ChattingRoomActivity.this, FragmentChatting.class);
+                Intent intent = new Intent(ChattingRoomActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });
     }
-
 }

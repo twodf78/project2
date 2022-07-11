@@ -46,7 +46,7 @@ public class FragmentMypage extends Fragment {
     Button mypageLogoutBtn;
     Button mypageSelectHobbyBtn;
 
-    private static final String URL = "http://172.10.19.184:443/";
+    private static final String URL = "http://192.249.19.184:443/";
     private final String TAG = "request log";
 
     private Retrofit retrofit;

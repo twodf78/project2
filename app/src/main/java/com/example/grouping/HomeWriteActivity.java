@@ -25,7 +25,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HomeWriteActivity extends AppCompatActivity {
 
-    private static final String URL = "http://172.10.19.184:443/";
+    private static final String URL = "http://192.249.19.184:443/";
     private final String TAG = "request log";
 
     private Retrofit retrofit;
@@ -111,7 +111,7 @@ public class HomeWriteActivity extends AppCompatActivity {
     }
 
     private void postSuggest() {
-        PostSuggest post = new PostSuggest("2022-07-09 11:00:00", "2022-07-09 12:00:00", current_user_id, title.getText().toString(), content.getText().toString()
+        PostSuggest post = new PostSuggest(fixedStartTime, fixedEndTime, current_user_id, title.getText().toString(), content.getText().toString()
                 ,location.getSelectedItem().toString(), Integer.parseInt(people.getSelectedItem().toString()),1, 5);
         retrofit = new Retrofit.Builder()
                 .baseUrl(URL)
@@ -141,18 +141,23 @@ public class HomeWriteActivity extends AppCompatActivity {
     }
 
     public void setTime(){
-        fixedStartTime = startDate.getText().toString() + " " + startTime.getText().toString()+"00";
-        fixedEndTime = endDate.getText().toString() + " " + endTime.getText().toString();
-        fixedStartTime = fixedStartTime.replace("년", "-");
-        fixedStartTime = fixedStartTime.replace("월", "-");
-        fixedStartTime = fixedStartTime.replace("일", " ");
-        fixedStartTime = fixedStartTime.replace("시", ":");
+        fixedStartTime = startDate.getText().toString() + "" + startTime.getText().toString()+"00";
+        fixedEndTime = endDate.getText().toString() + "" + endTime.getText().toString()+"00";
+        fixedStartTime = fixedStartTime.replace("년 ", "-");
+        fixedStartTime = fixedStartTime.replace("월 ", "-");
+        fixedStartTime = fixedStartTime.replace("일 ", " ");
+        fixedStartTime = fixedStartTime.replace("\n", "");
+        fixedStartTime = fixedStartTime.replace("시 ", ":");
         fixedStartTime = fixedStartTime.replace("분", ":");
-        fixedEndTime = fixedEndTime.replace("년", "-");
-        fixedEndTime = fixedEndTime.replace("월", "-");
-        fixedEndTime = fixedEndTime.replace("일", " ");
-        fixedEndTime = fixedEndTime.replace("시", ":");
+        fixedStartTime = fixedStartTime.replace("\n", "");
+        fixedEndTime = fixedEndTime.replace("년 ", "-");
+        fixedEndTime = fixedEndTime.replace("월 ", "-");
+        fixedEndTime = fixedEndTime.replace("일 ", " ");
+        fixedEndTime = fixedEndTime.replace("\n ", "");
+        fixedEndTime = fixedEndTime.replace("시 ", ":");
         fixedEndTime = fixedEndTime.replace("분", ":");
+        fixedEndTime = fixedEndTime.replace("\n", "");
+
     }
 
 }
