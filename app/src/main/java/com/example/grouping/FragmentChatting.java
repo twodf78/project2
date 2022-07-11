@@ -1,5 +1,7 @@
 package com.example.grouping;
 
+import static com.example.grouping.MainActivity.current_user_id;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -50,7 +52,6 @@ public class FragmentChatting extends Fragment {
 
     ChattingAdapter chattingAdapter;
     public static ArrayList<JSONObject> jsonChatArray =new ArrayList<>();
-    Integer user_id = 3;
     RecyclerView recyclerView;
 
     public FragmentChatting() {
@@ -71,15 +72,18 @@ public class FragmentChatting extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         final Context context = view.getContext();
 
+        retrofit = new Retrofit.Builder()
+                .baseUrl(URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        service = retrofit.create(APIService.class);
+
         //recyclerview 만드는 부분
         chattingAdapter = new ChattingAdapter(context);
-        RecyclerView recyclerView = view.findViewById(R.id.chatRecyclerView);
+        recyclerView = view.findViewById(R.id.chatRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         populateTable();
-        for (int i=0; i<jsonChatArray.size();i++){
-            chattingAdapter.setArrayData(jsonChatArray.get(i));
-        }
-        recyclerView.setAdapter(chattingAdapter);
+
 
     }
 
@@ -92,7 +96,7 @@ public class FragmentChatting extends Fragment {
             @Override
             public void run() {
                 try {
-                    request();
+                    requestParty();
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -106,14 +110,9 @@ public class FragmentChatting extends Fragment {
         }.start();
     }
 
-    private void request() {
-        retrofit = new Retrofit.Builder()
-                .baseUrl(URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        service = retrofit.create(APIService.class);
+    private void requestParty() {
 
-        Call<ResponseBody> call_get = service.getParty("3");
+        Call<ResponseBody> call_get = service.getParty(current_user_id);
         call_get.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -123,8 +122,10 @@ public class FragmentChatting extends Fragment {
                         Log.v(TAG, "result = " + result);
                         try {
                             JSONArray arr = new JSONArray(result);
-                            for (int i=0; i<arr.length();i++){
-                                jsonChatArray.add(arr.getJSONObject(i));
+                            for(int i= 1;i<=5;i++){
+                                if(Integer.parseInt(arr.getJSONObject(0).getString("suggest_" + String.valueOf(i)+"_id")) > 0){
+                                    requestSuggests(arr.getJSONObject(0).getString("suggest_" + String.valueOf(i)+"_id"));
+                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -137,7 +138,39 @@ public class FragmentChatting extends Fragment {
                     Toast.makeText(getContext(), "error = " + String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
                 }
             }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.v(TAG, "Fail");
+                Toast.makeText(getContext(), "Response Fail", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private void requestSuggests(String oneOfParty) {
 
+        Call<ResponseBody> call_get = service.getSuggestById(oneOfParty);
+        call_get.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    try {
+                        String result = response.body().string();
+                        Log.v(TAG, "result = " + result);
+                        try {
+                            JSONArray arr = new JSONArray(result);
+                            chattingAdapter.setArrayData(arr.getJSONObject(0));
+                            recyclerView.setAdapter(chattingAdapter);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Log.v(TAG, "error = " + String.valueOf(response.code()));
+                    Toast.makeText(getContext(), "error = " + String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                }
+            }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Log.v(TAG, "Fail");

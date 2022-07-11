@@ -1,5 +1,7 @@
 package com.example.grouping;
 
+import static com.example.grouping.MainActivity.current_user_id;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 import okhttp3.ResponseBody;
@@ -47,7 +50,6 @@ public class MypageMyratingActivity extends AppCompatActivity {
 
     public static ArrayList<JSONObject> jsonRatingArray =new ArrayList<>();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +66,7 @@ public class MypageMyratingActivity extends AppCompatActivity {
         completeRating.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MypageMyratingActivity.this, FragmentMypage.class);
+                Intent intent = new Intent(MypageMyratingActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });
@@ -76,15 +78,15 @@ public class MypageMyratingActivity extends AppCompatActivity {
         service = retrofit.create(APIService.class);
 
         Intent getIntent = getIntent();
-        String user_id =getIntent.getStringExtra("user_id");
+
         String ratedUser_id =getIntent.getStringExtra("ratedUser_id");
         String name =getIntent.getStringExtra("name");
         String image =getIntent.getStringExtra("image");
         String hobby_id =getIntent.getStringExtra("hobby_id");
         String attractive =getIntent.getStringExtra("attractive");
 
-        adapter = new MyPageRatingAdapter(user_id, getApplicationContext());
-        requestFriend(user_id);
+        adapter = new MyPageRatingAdapter(current_user_id, getApplicationContext());
+        requestFriend(current_user_id);
 
         if(!TextUtils.isEmpty(ratedUser_id)){
             putRatedUser(ratedUser_id,name,image,hobby_id,attractive);
@@ -94,8 +96,6 @@ public class MypageMyratingActivity extends AppCompatActivity {
 
 
     private void requestFriend(String user_id) {
-
-
         Call<ResponseBody> call_get = service.getFriend(user_id);
         call_get.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -110,7 +110,7 @@ public class MypageMyratingActivity extends AppCompatActivity {
                                 //array 자체의 길이는 1임.
                                 String friend_id = friendIdArray.getJSONObject(0).getString("friend_"+String.valueOf(i) + "_id");
                                 Log.v(TAG, "result = " + friend_id);
-                                if(Integer.parseInt(friend_id)>0) {
+                                if(Integer.parseUnsignedInt(friend_id)!=0) {
                                     requestUser(friend_id);
                                 }
                             }
@@ -173,13 +173,8 @@ public class MypageMyratingActivity extends AppCompatActivity {
         });
     }
     private void putRatedUser(String ratedUser_id, String name, String image, String hobby_id, String attractive) {
-        PostUser post = new PostUser(name, image, Integer.parseInt(hobby_id), "", 0, Integer.parseInt(attractive));
+        PostUser post = new PostUser(ratedUser_id, name, image, Integer.parseInt(hobby_id), Integer.parseInt(attractive));
 
-        retrofit = new Retrofit.Builder()
-                .baseUrl(URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        service = retrofit.create(APIService.class);
         Call<PostUser> call_put = service.putUser(ratedUser_id, post);
         call_put.enqueue(new Callback<PostUser>() {
             @Override
@@ -199,8 +194,6 @@ public class MypageMyratingActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Response Fail", Toast.LENGTH_SHORT).show();
             }
         });
-
-
     }
 
 }

@@ -48,10 +48,10 @@ public class HomeRecyclerAdapterAll extends RecyclerView.Adapter<HomeRecyclerAda
         JSONObject jsonData = arrayList.get(position);
         try {
             holder.textContent.setText(jsonData.getString("content"));
-            holder.textTitle.setText(jsonData.getString("hobby_id"));
-            holder.btn1.setText(jsonData.getString("created_by"));
-            holder.btn2.setText(jsonData.getString("startTime"));
-            holder.btn3.setText(jsonData.getString("endTIME"));
+            holder.textTitle.setText(jsonData.getString("title"));
+            holder.location.setText(jsonData.getString("location"));
+            holder.startTime.setText(jsonData.getString("startTime"));
+            holder.endTime.setText(jsonData.getString("endTime"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -83,15 +83,15 @@ public class HomeRecyclerAdapterAll extends RecyclerView.Adapter<HomeRecyclerAda
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView textTitle;
         TextView textContent;
-        Button btn1,btn2,btn3;
+        Button location,startTime,endTime;
         LinearLayout oneSuggest;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            textContent= itemView.findViewById(R.id.homecardviewcontent);
-            textTitle=itemView.findViewById(R.id.homecardviewtitle);
-            btn1=itemView.findViewById(R.id.homeshortinfobtn1);
-            btn2=itemView.findViewById(R.id.homeshortinfobtn2);
-            btn3=itemView.findViewById(R.id.homeshortinfobtn3);
+            textContent= itemView.findViewById(R.id.homeContent);
+            textTitle=itemView.findViewById(R.id.homeTitle);
+            location=itemView.findViewById(R.id.homeLocation);
+            startTime=itemView.findViewById(R.id.homeStartTime);
+            endTime=itemView.findViewById(R.id.homeEndTime);
             oneSuggest = itemView.findViewById(R.id.oneSuggest);
         }
     }

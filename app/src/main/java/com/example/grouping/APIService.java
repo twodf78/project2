@@ -26,6 +26,9 @@ public interface APIService {
     @GET("/get/suggest/:id")
     Call<ResponseBody> getSuggestById(@Query("data") String data);
 
+    @GET("/get/suggest/:user_id")
+    Call<ResponseBody> getSuggestByUserId(@Query("data") String data);
+
     @GET("/get/party")
     Call<ResponseBody> getParty(@Query("data") String data);
 
@@ -52,10 +55,10 @@ public interface APIService {
     @PUT("/put/user/{id}")
     Call<PostUser> putUser(@Path("id") String id, @Body PostUser post);
 
-    @PUT("/put/suggest")
+    @PUT("/put/suggest/{id}")
     Call<PostSuggest> putSuggest(@Path("id") String id, @Body PostSuggest post);
 
-    @PUT("/put/party")
+    @PUT("/put/party/{id}")
     Call<PostParty> putParty(@Path("id") String id, @Body PostParty post);
 
 

@@ -29,12 +29,12 @@
                 android:layout_marginLeft="5dp"
                 android:src="@drawable/field"/>
             <TextView
-                android:id="@+id/homefieldspinnertext"
+                android:id="@+id/homeHobbyspinnertext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="   분야   "/>
             <Spinner
-                android:id="@+id/homefieldspinner"
+                android:id="@+id/homeHobbyspinner"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:entries="@array/분야"/>
@@ -57,12 +57,12 @@
                 android:src="@drawable/map"
                 android:layout_marginLeft="5dp"/>
             <TextView
-                android:id="@+id/homeregionspinnertext"
+                android:id="@+id/homeLocationSpinnertext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="   지역   "/>
             <Spinner
-                android:id="@+id/homeregionspinner"
+                android:id="@+id/homeLocationSpinner"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:entries="@array/지역"/>

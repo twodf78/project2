@@ -1,5 +1,7 @@
 package com.example.grouping;
 
+import static com.example.grouping.MainActivity.current_user_id;
+
 import android.content.Intent;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -43,8 +45,6 @@ public class FragmentMypage extends Fragment {
     private Retrofit retrofit;
     private APIService service;
 
-    public static ArrayList<JSONObject> jsonMypageArray =new ArrayList<>();
-    Integer size = jsonMypageArray.size();
 
     public FragmentMypage() {
         super(R.layout.fragment_chatting);
@@ -91,19 +91,12 @@ public class FragmentMypage extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), MypageMyratingActivity.class);
-                try {
-                    intent.putExtra("user_id", jsonMypageArray.get(0).getString("id"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
                 startActivity(intent);
             }
         });
 
 
-        if(jsonMypageArray.size() == 0){
-            request(titleView,nameView,attractView,hobbyView);
-        }
+        request(titleView,nameView,attractView,hobbyView);
 
     }
 
@@ -131,7 +124,7 @@ public class FragmentMypage extends Fragment {
     }
 
     private void request(TextView titleView,TextView nameView,TextView attractView,TextView hobbyView) {
-        Call<ResponseBody> call_get = service.getUser("3");
+        Call<ResponseBody> call_get = service.getUser(current_user_id);
         call_get.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -141,13 +134,10 @@ public class FragmentMypage extends Fragment {
                         Log.v(TAG, "result = " + result);
                         try {
                             JSONArray arr = new JSONArray(result);
-                            for (int i=0; i<arr.length();i++){
-                                jsonMypageArray.add(arr.getJSONObject(i));
-                            }
-                            nameView.setText(jsonMypageArray.get(0).getString("name"));
-                            attractView.setText(jsonMypageArray.get(0).getString("attractive"));
-                            hobbyView.setText(jsonMypageArray.get(0).getString("hobby_id"));
-                            requestTitle(titleView,jsonMypageArray.get(0).getString("attractive"));
+                            nameView.setText(arr.getJSONObject(0).getString("name"));
+                            attractView.setText(arr.getJSONObject(0).getString("attractive"));
+                            hobbyView.setText(arr.getJSONObject(0).getString("hobby_id"));
+                            requestTitle(titleView,arr.getJSONObject(0).getString("attractive"));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

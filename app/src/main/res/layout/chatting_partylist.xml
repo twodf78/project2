@@ -24,7 +24,7 @@
             android:orientation="horizontal">
 
             <android.widget.Button
-                android:id="@+id/chattingBtn1"
+                android:id="@+id/partyLocation"
                 android:layout_width="45dp"
                 android:layout_height="20dp"
                 android:layout_margin="3dp"
@@ -32,7 +32,7 @@
                 android:text="서울" />
 
             <android.widget.Button
-                android:id="@+id/chattingBtn2"
+                android:id="@+id/partyStartTime"
                 android:layout_width="45dp"
                 android:layout_height="20dp"
                 android:layout_margin="3dp"
@@ -40,7 +40,7 @@
                 android:text="20대 초" />
 
             <android.widget.Button
-                android:id="@+id/chattingBtn3"
+                android:id="@+id/partyEndTime"
                 android:layout_width="45dp"
                 android:layout_height="20dp"
                 android:layout_margin="3dp"
@@ -49,7 +49,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/partyOwner"
+            android:id="@+id/partyTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Study title"

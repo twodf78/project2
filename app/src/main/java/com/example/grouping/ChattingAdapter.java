@@ -41,9 +41,10 @@ public class ChattingAdapter extends RecyclerView.Adapter<ChattingAdapter.ViewHo
     public void onBindViewHolder(@NonNull ChattingAdapter.ViewHolder holder, int position) {
         JSONObject jsonData = arrayList.get(position);
         try {
-            holder.textTitle.setText(jsonData.getString("user_id"));
-            holder.btn1.setText(jsonData.getString("suggest_id"));
-            holder.btn2.setText(jsonData.getString("chatting"));
+            holder.textTitle.setText(jsonData.getString("title"));
+            holder.location.setText(jsonData.getString("location"));
+            holder.startTime.setText(jsonData.getString("startTime"));
+            holder.endTime.setText(jsonData.getString("endTime"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -60,13 +61,13 @@ public class ChattingAdapter extends RecyclerView.Adapter<ChattingAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView textTitle;
-        Button btn1,btn2,btn3;
+        Button location,startTime,endTime;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            textTitle=itemView.findViewById(R.id.partyOwner);
-            btn1=itemView.findViewById(R.id.chattingBtn1);
-            btn2=itemView.findViewById(R.id.chattingBtn2);
-            btn3=itemView.findViewById(R.id.chattingBtn3);
+            textTitle=itemView.findViewById(R.id.partyTitle);
+            location=itemView.findViewById(R.id.partyLocation);
+            startTime=itemView.findViewById(R.id.partyStartTime);
+            endTime=itemView.findViewById(R.id.partyEndTime);
         }
     }
 }
