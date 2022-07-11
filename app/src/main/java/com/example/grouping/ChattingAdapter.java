@@ -1,11 +1,18 @@
 package com.example.grouping;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
+import static com.example.grouping.MainActivity.current_user_id;
+
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -48,6 +55,20 @@ public class ChattingAdapter extends RecyclerView.Adapter<ChattingAdapter.ViewHo
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        holder.oneParty.setOnClickListener(new View.OnClickListener() {
+            //attractive 10점 빼기
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), ChattingRoomActivity.class);
+                try {
+                    intent.putExtra("suggest_id",jsonData.getString("id"));
+                    Toast.makeText(context.getApplicationContext(), jsonData.getString("id") + "suggest ~번의 채팅방으로 진입", Toast.LENGTH_SHORT).show();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                context.startActivity(intent.addFlags(FLAG_ACTIVITY_NEW_TASK));
+            }
+        });
     }
 
     @Override
@@ -61,6 +82,7 @@ public class ChattingAdapter extends RecyclerView.Adapter<ChattingAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView textTitle;
+        LinearLayout oneParty;
         Button location,startTime,endTime;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -68,6 +90,7 @@ public class ChattingAdapter extends RecyclerView.Adapter<ChattingAdapter.ViewHo
             location=itemView.findViewById(R.id.partyLocation);
             startTime=itemView.findViewById(R.id.partyStartTime);
             endTime=itemView.findViewById(R.id.partyEndTime);
+            oneParty = itemView.findViewById(R.id.oneParty);
         }
     }
 }

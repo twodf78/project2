@@ -249,13 +249,13 @@
                         android:src="@drawable/people" />
 
                     <TextView
-                        android:id="@+id/homepeoplespinnertext"
+                        android:id="@+id/homePeopleSpinnerText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="   수용 인원    " />
 
                     <Spinner
-                        android:id="@+id/homepeoplespinner"
+                        android:id="@+id/homePeopleSpinner"
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:entries="@array/수용인원" />

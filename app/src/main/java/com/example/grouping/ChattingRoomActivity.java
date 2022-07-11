@@ -8,15 +8,15 @@ import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class ChattingRoomActivity extends AppCompatActivity {
-    ImageButton backbtn;
+    ImageButton backBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatting_room);
 
-        backbtn=findViewById(R.id.chattingRoomBackbtn);
-        backbtn.setOnClickListener(new View.OnClickListener() {
+        backBtn =findViewById(R.id.chattingRoomBackbtn);
+        backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ChattingRoomActivity.this, FragmentChatting.class);

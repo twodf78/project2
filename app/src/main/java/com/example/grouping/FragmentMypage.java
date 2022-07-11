@@ -85,9 +85,6 @@ public class FragmentMypage extends Fragment {
         TextView attractView = view.findViewById(R.id.myPageAttract);
         TextView hobbyView = view.findViewById(R.id.myPageHobby);
         mypageWritingCardview=view.findViewById(R.id.mypageseemywriting);
-        mypageRatingCardview=view.findViewById(R.id.mypageseemyrating);
-        mypageLogoutBtn=view.findViewById(R.id.kakaoLogoutbtn);
-        mypageSelectHobbyBtn=view.findViewById(R.id.myPageSelectHobby);
         mypageWritingCardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,7 +93,7 @@ public class FragmentMypage extends Fragment {
             }
         });
 
-
+        mypageSelectHobbyBtn=view.findViewById(R.id.myPageSelectHobby);
         mypageSelectHobbyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,6 +107,7 @@ public class FragmentMypage extends Fragment {
 
 
         //이 안으로 못 들어감
+        mypageLogoutBtn=view.findViewById(R.id.kakaoLogoutbtn);
         mypageLogoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,7 +123,7 @@ public class FragmentMypage extends Fragment {
                 });
             }
         });
-
+        mypageRatingCardview=view.findViewById(R.id.mypageseemyrating);
         mypageRatingCardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

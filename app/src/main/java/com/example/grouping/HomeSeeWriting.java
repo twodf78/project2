@@ -19,9 +19,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.grouping.post.PostParty;
+import com.example.grouping.post.PostSuggest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -59,7 +61,7 @@ public class HomeSeeWriting extends AppCompatActivity {
     private APIService service;
     ArrayList<Integer> suggest_id_of_party;
     String currentSuggestId;
-
+    Boolean ableToJoin = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,16 +77,25 @@ public class HomeSeeWriting extends AppCompatActivity {
 
         viewInit();
 
+        //참여하기 누르면
+
+        requestSuggest(currentSuggestId);
+        requestUser(createdUserId);
+
         oneSuggestJoinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestGetParty();
+                if(ableToJoin){
+                    //일단 party를 가져오고 어떤 suggest id 에 넣을 지 확인
+                    requestGetParty();
+                }else{
+                    Toast.makeText(getApplicationContext(),"수용인원이 꽉 찼습니다." , Toast.LENGTH_SHORT );
+                }
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
             }
         });
-        requestSuggest(currentSuggestId);
-        requestUser(createdUserId);
+
 
     }
 
@@ -191,6 +202,7 @@ public class HomeSeeWriting extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     try {
                         String result = response.body().string();
+                        int index = 0;
                         Log.v(TAG, "result = " + result);
                         try {
                             JSONArray arr = new JSONArray(result);
@@ -204,6 +216,7 @@ public class HomeSeeWriting extends AppCompatActivity {
                                 else if(Integer.parseInt(temp) == 0 && !alreadyAdded){
                                     suggest_id_of_party.add(Integer.parseInt(currentSuggestId));
                                     alreadyAdded = true;
+                                    index = i-1;
                                 }
                                 else{
                                     suggest_id_of_party.add(0);
@@ -212,7 +225,9 @@ public class HomeSeeWriting extends AppCompatActivity {
                             if(!alreadyAdded){
                               Toast.makeText(getApplicationContext(), "최대 5개까지의 party 밖에 생성을 하지 못 합니다." , Toast.LENGTH_SHORT);
                             } else{
+                                //무조건 추가 가능 한 부분, party 도 가능하고, 수용인원도 가능하고
                                 requestPutParty();
+                                requestPutSuggest(String.valueOf(suggest_id_of_party.get(index)));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -254,6 +269,30 @@ public class HomeSeeWriting extends AppCompatActivity {
             }
         });
     }
+    private void requestPutSuggest(String suggest_id) throws JSONException {
+        JSONObject temp = arrSuggest.getJSONObject(0);
+        PostSuggest post =new PostSuggest(temp.getString("startTime"),temp.getString("endTime"), temp.getString("created_by"),temp.getString("title"),temp.getString("content"),
+                temp.getString("location"),Integer.parseInt(temp.getString("capacity")),Integer.parseInt(temp.getString("current")),Integer.parseInt(temp.getString("hobby_id")));
+        Call<PostSuggest> call_post = service.putSuggest(suggest_id, post);
+        call_post.enqueue(new Callback<PostSuggest>() {
+            @Override
+            public void onResponse(Call<PostSuggest> call, Response<PostSuggest> response) {
+                if (response.isSuccessful()) {
+                    String result = response.toString();
+                    Log.v(TAG, "result = " + result);
+                    Toast.makeText(getApplicationContext(), "suggest 변경 완료" , Toast.LENGTH_SHORT);
+                } else {
+                    Log.v(TAG, "error = " + String.valueOf(response.code()));
+                    Toast.makeText(getApplicationContext(), "error = " + String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<PostSuggest> call, Throwable t) {
+                Log.v(TAG, "Fail");
+                Toast.makeText(getApplicationContext(), "Response Fail", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
     private void viewInit() {
         setContentView(R.layout.activity_home_see_writing);
 
@@ -276,6 +315,12 @@ public class HomeSeeWriting extends AppCompatActivity {
                 oneSuggestLocation.setText(arrSuggest.getJSONObject(0).getString("location"));
                 oneSuggestTitle.setText(arrSuggest.getJSONObject(0).getString("Title"));
                 oneSuggestContent.setText(arrSuggest.getJSONObject(0).getString("content"));
+                if(arrSuggest.getJSONObject(0).getString("capacity").equals(arrSuggest.getJSONObject(0).getString("current"))){
+                    ableToJoin = false;
+                }else{
+                    ableToJoin = true;
+                }
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
