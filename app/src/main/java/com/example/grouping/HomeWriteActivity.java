@@ -1,8 +1,11 @@
 package com.example.grouping;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.grouping.post.PostSuggest;
@@ -30,6 +34,7 @@ public class HomeWriteActivity extends AppCompatActivity {
     private APIService service;
 
     EditText content;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +77,27 @@ public class HomeWriteActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void onBtnClicked3(View v) {
+        HomeDatePickerFragment newFragment = new HomeDatePickerFragment();
+        newFragment.show(getFragmentManager(),"datePicker");
+    }
+
+    public void onBtnClicked4(View v) {
+        HomeDatePickerFragment2 newFragment = new HomeDatePickerFragment2();
+        newFragment.show(getFragmentManager(),"datePicker");
+    }
+
+    public void onBtnClicked(View v){
+        HomeTimePickerFragment newAlertFragment = new HomeTimePickerFragment();
+        newAlertFragment.show(getFragmentManager(), "TimePicker");
+    }
+
+    public void onBtnClicked2(View v){
+        HomeTimePickerFragment2 newAlertFragment2 = new HomeTimePickerFragment2();
+        newAlertFragment2.show(getFragmentManager(), "TimePicker");
+    }
+
     private void createPost() {
         PostSuggest post = new PostSuggest(5, 7, 2, content.getText().toString(),5);
         retrofit = new Retrofit.Builder()

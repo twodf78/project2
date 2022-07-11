@@ -36,8 +36,6 @@ import java.security.NoSuchAlgorithmException;
 
 public class    StartActivity extends AppCompatActivity {
     ImageButton kakaoLogin;
-    TextView kakaoLogout;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,8 +79,6 @@ public class    StartActivity extends AppCompatActivity {
 
     private void viewInit(){
         kakaoLogin = findViewById(R.id.kakaoLoginbtn);
-        kakaoLogout = findViewById(R.id.kakaoLogout);
-
     }
 
     // 로그인 공통 callback 구성
@@ -97,10 +93,6 @@ public class    StartActivity extends AppCompatActivity {
             }
             return null;
         });
-    }
-
-    private void kakaoLogout() {
-        UserApiClient.getInstance().logout(error -> null);
     }
 
     public void kakaoAccountLogin() {

@@ -13,6 +13,7 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -35,6 +36,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class MainActivity extends AppCompatActivity {
+
+    FragmentHome fragmentHome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,10 +92,9 @@ public class MainActivity extends AppCompatActivity {
         });
         navigation.setOnItemReselectedListener(null);
 
-//        //ViewPager 부분
-//        ViewPager vp = findViewById(R.id.viewpager);
-//        VPAdapter vpadapter = new VPAdapter(getSupportFragmentManager());
-//        vp.setAdapter(vpadapter);
+//        FragmentTransaction transaction = fragmentManager.beginTransaction();
+//        transaction.replace(R.id.framemainlayout, fragmentHome).commitAllowingStateLoss();
+
     }
 
     private void getHashKey(){

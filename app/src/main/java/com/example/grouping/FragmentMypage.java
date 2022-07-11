@@ -14,9 +14,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.kakao.sdk.user.UserApiClient;
+import com.kakao.usermgmt.UserManagement;
+import com.kakao.usermgmt.callback.LogoutResponseCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,6 +41,8 @@ public class FragmentMypage extends Fragment {
 
     CardView mypageWritingCardview;
     CardView mypageRatingCardview;
+    Button mypageLogoutBtn;
+    Button mypageSelectHobbyBtn;
 
     private static final String URL = "http://172.10.19.184:443/";
     private final String TAG = "request log";
@@ -66,11 +73,50 @@ public class FragmentMypage extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         mypageWritingCardview=view.findViewById(R.id.mypageseemywriting);
         mypageRatingCardview=view.findViewById(R.id.mypageseemyrating);
+        mypageLogoutBtn=view.findViewById(R.id.kakaoLogoutbtn);
+        mypageSelectHobbyBtn=view.findViewById(R.id.myPageSelectHobby);
         mypageWritingCardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), MypageMywritingActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        mypageSelectHobbyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), MypageSelectHobby.class);
+                startActivity(intent);
+            }
+        });
+
+        //StartActivity에서 데이터 주면 여기서 데이터 받기?
+//        Intent intent = getIntent();
+//        strNickname = intent.getStringExtra("name");
+//        strProfile = intent.getStringExtra("profile");
+//
+//        tvNickname.setText(strNickname);
+//        tvProfile.setText(strProfile);
+
+
+
+        //이 안으로 못 들어감
+        mypageLogoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "정상적으로 로그아웃되었습니다.", Toast.LENGTH_SHORT).show();
+
+                UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
+                    @Override
+                    public void onCompleteLogout() {
+                        Intent intent = new Intent(getActivity(), StartActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    }
+                });
+
+
             }
         });
 
@@ -86,6 +132,7 @@ public class FragmentMypage extends Fragment {
                 startActivity(intent);
             }
         });
+
         final Context context = view.getContext();
         ImageView imageView = view.findViewById(R.id.myPageImage);
         TextView nameView = view.findViewById(R.id.myPageName);
@@ -171,6 +218,10 @@ public class FragmentMypage extends Fragment {
                 Toast.makeText(getContext(), "Response Fail", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void kakaoLogout() {
+        UserApiClient.getInstance().logout(error -> null);
     }
 
 }

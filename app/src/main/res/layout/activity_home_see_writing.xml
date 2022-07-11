@@ -36,6 +36,7 @@
                     android:layout_width="20dp"
                     android:layout_height="match_parent"
                     android:src="@drawable/thirdtrophy" />
+
                 <TextView
                     android:id="@+id/oneSuggestTitle"
                     android:layout_width="wrap_content"
@@ -95,26 +96,20 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
-
             <LinearLayout
                 android:layout_width="300dp"
                 android:layout_height="20dp"
                 android:orientation="horizontal">
-
                 <TextView
                     android:layout_width="40dp"
                     android:layout_height="20dp"
                     android:layout_marginLeft="10dp"
                     android:text="분야"
                     android:textColor="@color/darkgray" />
-
                 <TextView
                     android:id="@+id/oneSuggestArea"
                     android:layout_width="match_parent"
@@ -127,19 +122,83 @@
                 android:layout_width="300dp"
                 android:layout_height="20dp"
                 android:orientation="horizontal">
-
                 <TextView
                     android:layout_width="40dp"
                     android:layout_height="20dp"
                     android:layout_marginLeft="10dp"
                     android:text="지역"
                     android:textColor="@color/darkgray" />
-
                 <TextView
                     android:id="@+id/oneSuggestLocation"
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
                     android:text="서울/경기"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="300dp"
+                android:layout_height="20dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:text="시작 시간"
+                    android:textColor="@color/darkgray" />
+                <TextView
+                    android:id="@+id/oneSuggestStartTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:text="22-07-11  |  12:00"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="300dp"
+                android:layout_height="20dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:text="끝나는 시간"
+                    android:textColor="@color/darkgray" />
+                <TextView
+                    android:id="@+id/oneSuggestFinishTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:text="22-08-29  |  24:00"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="300dp"
+                android:layout_height="20dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:text="수용 인원"
+                    android:textColor="@color/darkgray" />
+                <TextView
+                    android:id="@+id/oneSuggestPeopleNow"
+                    android:layout_width="25dp"
+                    android:layout_height="20dp"
+                    android:text="2명"
+                    android:textColor="@color/black" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:text="/"
+                    android:textColor="@color/black" />
+                <TextView
+                    android:id="@+id/oneSuggestPeopleAll"
+                    android:layout_width="40dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="5dp"
+                    android:text="4명"
                     android:textColor="@color/black" />
             </LinearLayout>
 
@@ -151,12 +210,11 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="20dp"
                 android:text="스터디 내용\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n스터디 내용" />
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="10dp"
-                android:background="@color/black"/>
+                android:background="@color/black" />
         </LinearLayout>
 
     </ScrollView>

@@ -5,13 +5,27 @@
         <item>코딩/IT</item>
         <item>줌터디</item>
         <item>스포츠</item>
+        <item>어학</item>
+        <item>문화/예술</item>
+        <item>기타</item>
     </string-array>
 
     <string-array name="지역">
         <item>전체</item>
         <item>서울/경기</item>
         <item>충남</item>
+        <item>강원</item>
+        <item>전남</item>
         <item>부산</item>
+        <item>제주</item>
+    </string-array>
+
+    <string-array name="수용인원">
+        <item>제한 없음</item>
+        <item>2명</item>
+        <item>3명</item>
+        <item>4명</item>
+        <item>5명</item>
     </string-array>
 
 </resources>
