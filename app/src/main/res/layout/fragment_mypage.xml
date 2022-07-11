@@ -3,12 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".FragmentMypage">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="284dp"
+        app:cardBackgroundColor="@color/lightorange1"
+        android:layout_marginTop="-60dp"
+        app:cardCornerRadius="50dp">
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
         android:orientation="horizontal">
         <TextView
             android:layout_width="wrap_content"
@@ -16,18 +27,18 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="15dp"
             android:text="내 정보"
+            android:textColor="@color/black"
             android:textSize="20dp"
             android:textStyle="bold" />
         <Button
             android:id="@+id/kakaoLogoutbtn"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:layout_marginLeft="220dp"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="255dp"
             android:text="로그아웃"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/edittext_round_shape"
             android:backgroundTint="@color/orange"/>
-
     </LinearLayout>
 
 
@@ -35,7 +46,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="125dp"
         android:orientation="horizontal">
 
         <!--사진 둥그렇게-->
@@ -112,7 +123,7 @@
                     android:layout_width="70dp"
                     android:layout_height="25dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/btn_round_shape"
+                    android:background="@drawable/btn_round_shape0"
                     android:backgroundTint="@color/gray"
                     android:text="관심사 선택"
                     android:textSize="13dp" />
@@ -129,24 +140,32 @@
         </LinearLayout>
     </LinearLayout>
 
-    <View
+    </androidx.cardview.widget.CardView>
+
+
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="20dp"
-        android:background="@color/gray"/>
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        app:cardCornerRadius="20dp"
+        android:layout_marginRight="15dp"
+        app:cardBackgroundColor="@color/lightblue00"
+        android:layout_marginTop="30dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="20dp"
         android:orientation="vertical">
+
+
 
         <androidx.cardview.widget.CardView
             android:id="@+id/mypageseemywriting"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:layout_marginTop="30dp">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -173,9 +192,10 @@
             android:id="@+id/mypageseemyrating"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginTop="30dp">
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginBottom="30dp">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -197,5 +217,7 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
+
     </LinearLayout>
+    </androidx.cardview.widget.CardView>
 </LinearLayout>
