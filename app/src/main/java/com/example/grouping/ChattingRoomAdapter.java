@@ -2,8 +2,6 @@ package com.example.grouping;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
-import static com.example.grouping.MainActivity.current_user_id;
-
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -22,18 +20,18 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class ChattingAdapter extends RecyclerView.Adapter<ChattingAdapter.ViewHolder> {
-    private final ArrayList<JSONObject> arrayList ;
+public class ChattingRoomAdapter extends RecyclerView.Adapter<ChattingRoomAdapter.ViewHolder> {
+    private final ArrayList<JSONObject> arrayList;
     private final Context context;
 
-    public ChattingAdapter(Context context) {
+    public ChattingRoomAdapter(Context context) {
         this.context = context;
         arrayList = new ArrayList<>();
     }
 
     @NonNull
     @Override
-    public ChattingAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ChattingRoomAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater
                 .from(parent.getContext())
                 .inflate(
@@ -41,11 +39,11 @@ public class ChattingAdapter extends RecyclerView.Adapter<ChattingAdapter.ViewHo
                         parent,
                         false
                 );
-        return new ChattingAdapter.ViewHolder(view);
+        return new ChattingRoomAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ChattingAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ChattingRoomAdapter.ViewHolder holder, int position) {
         JSONObject jsonData = arrayList.get(position);
         try {
             holder.textTitle.setText(jsonData.getString("title"));
@@ -61,7 +59,7 @@ public class ChattingAdapter extends RecyclerView.Adapter<ChattingAdapter.ViewHo
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), ChattingRoomActivity.class);
                 try {
-                    intent.putExtra("suggest_id",jsonData.getString("id"));
+                    intent.putExtra("suggest_id", jsonData.getString("id"));
                     Toast.makeText(context.getApplicationContext(), jsonData.getString("id") + "suggest ~번의 채팅방으로 진입", Toast.LENGTH_SHORT).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -83,13 +81,14 @@ public class ChattingAdapter extends RecyclerView.Adapter<ChattingAdapter.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView textTitle;
         LinearLayout oneParty;
-        Button location,startTime,endTime;
+        Button location, startTime, endTime;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            textTitle=itemView.findViewById(R.id.partyTitle);
-            location=itemView.findViewById(R.id.partyLocation);
-            startTime=itemView.findViewById(R.id.partyStartTime);
-            endTime=itemView.findViewById(R.id.partyEndTime);
+            textTitle = itemView.findViewById(R.id.partyTitle);
+            location = itemView.findViewById(R.id.partyLocation);
+            startTime = itemView.findViewById(R.id.partyStartTime);
+            endTime = itemView.findViewById(R.id.partyEndTime);
             oneParty = itemView.findViewById(R.id.oneParty);
         }
     }
