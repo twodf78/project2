@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,7 +24,9 @@ import com.google.gson.JsonParser;
 
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -52,6 +55,9 @@ import retrofit2.Retrofit;
 public class MainActivity extends AppCompatActivity {
     private static final String URL = "http://192.249.19.184:443/";
     private Socket socket;
+    private View header;
+    private ImageView myhomeMyheart;
+    private TextView myhomeMyheartNum;
 
     FragmentHome fragmentHome;
 
@@ -68,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
             current_user_id = intent.getStringExtra("current_user_id");
         }
 
-        textView = findViewById(R.id.textView);
         try {
             socket = IO.socket(URL);
             socket.on(Socket.EVENT_CONNECT, onMessage);
@@ -97,13 +102,18 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             fragmentManager.beginTransaction()
                     .setReorderingAllowed(true)
-                    .add(R.id.framemainlayout, FragmentHome.class, null)
+                    .add(R.id.framemainlayout, FragmentChatting.class, null)
                     .commit();
         }
 
+        header=getLayoutInflater().inflate(R.layout.fragment_mypage, null, false);
+        myhomeMyheart=(ImageView) header.findViewById(R.id.mypageHeartBar);
+        myhomeMyheartNum=(TextView) header.findViewById(R.id.myPageAttract);
+
+
         //하단 메뉴바 구현
         BottomNavigationView navigation = findViewById(R.id.bottomNavigationView);
-        navigation.setSelectedItemId(R.id.tabhome);
+//        navigation.setSelectedItemId(R.id.tabhome);
         navigation.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.tabchatting)
@@ -111,24 +121,26 @@ public class MainActivity extends AppCompatActivity {
                         .setReorderingAllowed(true)
                         .replace(R.id.framemainlayout, FragmentChatting.class, null)
                         .commit();
-            else if (itemId == R.id.tabhome)
+            else if (itemId == R.id.tabhome) {
                 fragmentManager.beginTransaction()
                         .setReorderingAllowed(true)
                         .replace(R.id.framemainlayout, FragmentHome.class, null)
                         .commit();
-            else if (itemId == R.id.tabmypage)
+
+
+            }
+            else if (itemId == R.id.tabmypage) {
                 fragmentManager.beginTransaction()
                         .setReorderingAllowed(true)
                         .replace(R.id.framemainlayout, FragmentMypage.class, null)
                         .commit();
+
+            }
             else
                 return false;
             return true;
         });
         navigation.setOnItemReselectedListener(null);
-
-//        FragmentTransaction transaction = fragmentManager.beginTransaction();
-//        transaction.replace(R.id.framemainlayout, fragmentHome).commitAllowingStateLoss();
 
     }
 

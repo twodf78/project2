@@ -25,7 +25,7 @@
             <android.widget.Button
                 android:id="@+id/homeshortinfobtn1"
                 android:layout_margin="3dp"
-                android:layout_width="45dp"
+                android:layout_width="60dp"
                 android:layout_height="20dp"
                 android:background="@drawable/btn_round_shape"
                 android:text="서울"/>
@@ -33,7 +33,7 @@
             <android.widget.Button
                 android:id="@+id/homeshortinfobtn2"
                 android:layout_margin="3dp"
-                android:layout_width="45dp"
+                android:layout_width="110dp"
                 android:layout_height="20dp"
                 android:background="@drawable/btn_round_shape"
                 android:text="20대 초"/>
@@ -41,7 +41,7 @@
             <android.widget.Button
                 android:id="@+id/homeshortinfobtn3"
                 android:layout_margin="3dp"
-                android:layout_width="45dp"
+                android:layout_width="110dp"
                 android:layout_height="20dp"
                 android:background="@drawable/btn_round_shape"
                 android:text="한 달"/>
