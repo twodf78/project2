@@ -69,6 +69,7 @@ public class MypageSelectHobby extends AppCompatActivity implements View.OnClick
                 mypageHobbyBtn.setText(mDataList.get(position));
 
                 Intent intent = new Intent(MypageSelectHobby.this, MainActivity.class);
+                intent.putExtra("hobby",mDataList.get(position));
                 startActivity(intent);
             }
         }
