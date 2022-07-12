@@ -132,33 +132,25 @@ public class FragmentMypage extends Fragment {
             }
         });
 
+//        int attractNum = Integer.parseInt(attractView.getText().toString());
+//        if (attractNum >= 60 && attractNum < 80){
+//            mypageHeartImage.setImageResource(R.drawable.heartbar4);
+//        }
+//        else if(attractNum >= 80){
+//            mypageHeartImage.setImageResource(R.drawable.heartbar5);
+//        }
+//        else if (attractNum<=40 && attractNum >20){
+//            mypageHeartImage.setImageResource(R.drawable.heartbar2);
+//        }
+//        else if (attractNum<=20){
+//            mypageHeartImage.setImageResource(R.drawable.heartbar1);
+//        }
+
 
         request(titleView,nameView,attractView,hobbyView);
 
     }
 
-    private void populateTable() {
-        ProgressDialog mProgressDialog = ProgressDialog.show(getContext(),
-                "Please wait",
-                "Long operation starts...",
-                true);
-        new Thread() {
-            @Override
-            public void run() {
-                try {
-                    //                request();
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mProgressDialog.dismiss();
-                        }
-                    });
-                } catch (final Exception ex) {
-                    Log.i("---","Exception in thread");
-                }
-            }
-        }.start();
-    }
 
     private void request(TextView titleView,TextView nameView,TextView attractView,TextView hobbyView) {
         Call<ResponseBody> call_get = service.getUser(current_user_id);

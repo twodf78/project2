@@ -318,9 +318,12 @@ public class HomeSeeWriting extends AppCompatActivity {
             try {
                 oneSuggestArea.setText(arrSuggest.getJSONObject(0).getString("hobby_id"));
                 oneSuggestLocation.setText(arrSuggest.getJSONObject(0).getString("location"));
-                oneSuggestTitle.setText(arrSuggest.getJSONObject(0).getString("Title"));
+                oneSuggestTitle.setText(arrSuggest.getJSONObject(0).getString("title"));
                 oneSuggestContent.setText(arrSuggest.getJSONObject(0).getString("content"));
-
+                oneSuggestCurrent.setText(arrSuggest.getJSONObject(0).getString("current"));
+                oneSuggestCapacity.setText(arrSuggest.getJSONObject(0).getString("capacity"));
+                oneSuggestStartTime.setText(arrSuggest.getJSONObject(0).getString("startTime"));
+                oneSuggestFinishTime.setText(arrSuggest.getJSONObject(0).getString("endTime"));
                 if(arrSuggest.getJSONObject(0).getString("capacity").equals(arrSuggest.getJSONObject(0).getString("current"))){
                     ableToJoin = false;
                 }else{

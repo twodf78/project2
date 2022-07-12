@@ -123,6 +123,7 @@ public class FragmentChatting extends Fragment {
                         try {
                             JSONArray arr = new JSONArray(result);
                             for(int i= 1;i<=5;i++){
+                                //여기서 계속 문제
                                 if(Integer.parseInt(arr.getJSONObject(0).getString("suggest_" + String.valueOf(i)+"_id")) > 0){
                                     requestSuggests(arr.getJSONObject(0).getString("suggest_" + String.valueOf(i)+"_id"));
                                 }
