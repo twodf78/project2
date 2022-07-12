@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -49,6 +50,7 @@ public class HomeSeeWriting extends AppCompatActivity {
     TextView oneUserAttract;
     TextView oneUserTitle;
     TextView oneUserName;
+    ImageView oneUserAttractImage;
 
     TextView oneSuggestJoinBtn;
     JSONArray arrSuggest;
@@ -77,6 +79,8 @@ public class HomeSeeWriting extends AppCompatActivity {
         String createdUserId = getIntent.getStringExtra("user_id");
 
         viewInit();
+
+        oneUserAttractImage=findViewById(R.id.oneUserAttractImage);
 
         //참여하기 누르면
 
@@ -311,6 +315,7 @@ public class HomeSeeWriting extends AppCompatActivity {
         oneSuggestContent = findViewById(R.id.oneSuggestContent);
         oneSuggestTitle = findViewById(R.id.oneSuggestTitle);
 
+
         oneSuggestJoinBtn = findViewById(R.id.oneSuggestJoinBtn);
     }
     private void setSuggestView() {
@@ -344,6 +349,27 @@ public class HomeSeeWriting extends AppCompatActivity {
                 //                oneUserImage.setText(arrSuggest.getJSONObject(0).getString("image"));
                 oneUserAttract.setText(arrUser.getJSONObject(0).getString("attractive"));
                 oneUserName.setText(arrUser.getJSONObject(0).getString("name"));
+
+                String attracttext=oneUserAttract.getText().toString();
+                int attractNum = Integer.parseInt(attracttext);
+                oneUserAttractImage.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Resources resources = getResources();
+                        if (attractNum >= 60 && attractNum < 80){
+                            oneUserAttractImage.setImageResource(R.drawable.heartbar4);
+                        }
+                        else if(attractNum >= 80){
+                            oneUserAttractImage.setImageResource(R.drawable.heartbar5);
+                        }
+                        else if (attractNum<=40 && attractNum >20){
+                            oneUserAttractImage.setImageResource(R.drawable.heartbar2);
+                        }
+                        else if (attractNum<=20){
+                            oneUserAttractImage.setImageResource(R.drawable.heartbar1);
+                        }
+                    }
+                });
             } catch (JSONException e) {
                 e.printStackTrace();
             }
