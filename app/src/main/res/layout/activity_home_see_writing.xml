@@ -72,7 +72,7 @@
                     android:layout_width="60dp"
                     android:layout_height="20dp"
                     android:layout_marginTop="3dp"
-                    android:src="@drawable/heartbar3" />
+                    android:src="@drawable/heartbar1" />
 
                 <TextView
                     android:id="@+id/oneUserAttract"
@@ -233,6 +233,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="20dp"
+                android:textSize="25dp"
                 android:text="스터디 내용\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n스터디 내용" />
             <View
                 android:layout_width="match_parent"

@@ -367,8 +367,7 @@ public class HomeSeeWriting extends AppCompatActivity {
                 oneUserAttractImage.post(new Runnable() {
                     @Override
                     public void run() {
-                        Resources resources = getResources();
-                        if (attractNum >= 60 && attractNum < 80){
+                        if (attractNum > 60 && attractNum < 80){
                             oneUserAttractImage.setImageResource(R.drawable.heartbar4);
                         }
                         else if(attractNum >= 80){
@@ -377,8 +376,8 @@ public class HomeSeeWriting extends AppCompatActivity {
                         else if (attractNum<=40 && attractNum >20){
                             oneUserAttractImage.setImageResource(R.drawable.heartbar2);
                         }
-                        else if (attractNum<=20){
-                            oneUserAttractImage.setImageResource(R.drawable.heartbar1);
+                        else if (attractNum<=60 && attractNum >40){
+                            oneUserAttractImage.setImageResource(R.drawable.heartbar3);
                         }
                     }
                 });
