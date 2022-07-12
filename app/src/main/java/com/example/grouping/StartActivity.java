@@ -43,7 +43,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class    StartActivity extends AppCompatActivity {
     ImageButton kakaoLogin;
-    TextView kakaoLogout;
     private static final String URL = "http://192.249.19.184:443/";
 
     private Retrofit retrofit;
