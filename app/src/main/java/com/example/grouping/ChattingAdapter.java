@@ -50,8 +50,8 @@ public class ChattingAdapter extends RecyclerView.Adapter<ChattingAdapter.ViewHo
         try {
             holder.textTitle.setText(jsonData.getString("title"));
             holder.location.setText(jsonData.getString("location"));
-            holder.startTime.setText(jsonData.getString("startTime"));
-            holder.endTime.setText(jsonData.getString("endTime"));
+            holder.startTime.setText(jsonData.getString("startTime").replace("T"," ").replace(".000Z",""));
+            holder.endTime.setText(jsonData.getString("endTime").replace("T"," ").replace(".000Z",""));
         } catch (JSONException e) {
             e.printStackTrace();
         }

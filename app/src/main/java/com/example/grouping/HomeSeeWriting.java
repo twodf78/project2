@@ -303,7 +303,7 @@ public class HomeSeeWriting extends AppCompatActivity {
         oneUserName = findViewById(R.id.oneUserName);
 
         oneSuggestStartTime = findViewById(R.id.oneSuggestStartTime);
-        oneSuggestFinishTime = findViewById(R.id.oneSuggestStartTime);
+        oneSuggestFinishTime = findViewById(R.id.oneSuggestFinishTime);
         oneSuggestCurrent = findViewById(R.id.oneSuggestPeopleNow);
         oneSuggestCapacity = findViewById(R.id.oneSuggestPeopleAll);
         oneSuggestArea = findViewById(R.id.oneSuggestArea);
@@ -322,8 +322,9 @@ public class HomeSeeWriting extends AppCompatActivity {
                 oneSuggestContent.setText(arrSuggest.getJSONObject(0).getString("content"));
                 oneSuggestCurrent.setText(arrSuggest.getJSONObject(0).getString("current"));
                 oneSuggestCapacity.setText(arrSuggest.getJSONObject(0).getString("capacity"));
-                oneSuggestStartTime.setText(arrSuggest.getJSONObject(0).getString("startTime"));
-                oneSuggestFinishTime.setText(arrSuggest.getJSONObject(0).getString("endTime"));
+                oneSuggestStartTime.setText(arrSuggest.getJSONObject(0).getString("startTime").replace("T"," ").replace(".000Z",""));
+                oneSuggestFinishTime.setText(arrSuggest.getJSONObject(0).getString("endTime").replace("T"," ").replace(".000Z",""));
+
                 if(arrSuggest.getJSONObject(0).getString("capacity").equals(arrSuggest.getJSONObject(0).getString("current"))){
                     ableToJoin = false;
                 }else{
