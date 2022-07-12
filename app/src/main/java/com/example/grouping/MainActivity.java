@@ -40,6 +40,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -54,8 +55,11 @@ import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity {
     private static final String URL = "http://192.249.19.184:443/";
-    private Socket socket;
+
     private View header;
+    private static Socket socket;
+    private static InputStream is;
+    private static OutputStream os;
     private ImageView myhomeMyheart;
     private TextView myhomeMyheartNum;
 
@@ -76,11 +80,15 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             socket = IO.socket(URL);
-            socket.on(Socket.EVENT_CONNECT, onMessage);
+//            socket.on(Socket.EVENT_CONNECT, onMessage);
             socket.connect();
-
+            socket.emit("EVENT_NAME", "DATA");
+            //on이 서버에서 받는 거.
+//            socket.on(Socket.EVENT_CONNECT, onMessage);
+            //emit이 주는 거. request response.
         } catch (Exception e) {
             e.printStackTrace();
+            Log.e("send","socket FAIL");
         }
 
 
@@ -90,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                //emit이 클라이언트에서 받는 거
                 socket.emit("msg", "hi");
                 Log.e("send","data");
                 Intent intent = new Intent(MainActivity.this, HomeWriteActivity.class);

@@ -84,6 +84,17 @@ public class FragmentChatting extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         populateTable();
 
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
 
     }
 

@@ -62,7 +62,7 @@ public class HomeSeeWriting extends AppCompatActivity {
     private APIService service;
     ArrayList<Integer> suggest_id_of_party;
     String currentSuggestId;
-    Boolean ableToJoin = false;
+    Boolean ableToJoin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,7 +75,8 @@ public class HomeSeeWriting extends AppCompatActivity {
         Intent getIntent = getIntent();
         currentSuggestId = getIntent.getStringExtra("suggest_id");
         String createdUserId = getIntent.getStringExtra("user_id");
-
+        suggest_id_of_party=new ArrayList<Integer>();
+        ableToJoin = false;
         viewInit();
 
         //참여하기 누르면
@@ -90,7 +91,7 @@ public class HomeSeeWriting extends AppCompatActivity {
                     //일단 party를 가져오고 어떤 suggest id 에 넣을 지 확인
                     requestGetParty();
                 }else{
-                    Toast.makeText(getApplicationContext(),"수용인원이 꽉 찼습니다." , Toast.LENGTH_SHORT );
+                    Toast.makeText(getApplicationContext(),"수용인원이 꽉 찼거나 자신이 만든 것을 선택하셨습니다." , Toast.LENGTH_SHORT ).show();
                 }
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
@@ -207,24 +208,32 @@ public class HomeSeeWriting extends AppCompatActivity {
                         Log.v(TAG, "result = " + result);
                         try {
                             JSONArray arr = new JSONArray(result);
-                            suggest_id_of_party=new ArrayList<Integer>();
-                            Boolean alreadyAdded = false;
+                            Boolean alreadyPicked = false;
+                            Boolean alreadyHad = false;
                             for(int i= 1;i<=5;i++){
                                 String temp = arr.getJSONObject(0).getString("suggest_" + String.valueOf(i)+"_id");
                                 if(Integer.parseInt(temp) >0){
                                     suggest_id_of_party.add(Integer.parseInt(temp));
+                                    if(Integer.parseInt(temp) == Integer.parseInt(currentSuggestId)){
+                                        alreadyHad = true;
+                                    }
                                 }
-                                else if(Integer.parseInt(temp) == 0 && !alreadyAdded){
+                                else if(Integer.parseInt(temp) == -1 && !alreadyPicked){
                                     suggest_id_of_party.add(Integer.parseInt(currentSuggestId));
-                                    alreadyAdded = true;
+                                    alreadyPicked = true;
                                     index = i-1;
                                 }
                                 else{
-                                    suggest_id_of_party.add(0);
+                                    suggest_id_of_party.add(-1);
                                 }
                             }
-                            if(!alreadyAdded){
-                              Toast.makeText(getApplicationContext(), "최대 5개까지의 party 밖에 생성을 하지 못 합니다." , Toast.LENGTH_SHORT);
+                            //이미 추가가 되어있는 것이었을 떄
+                            if(alreadyHad){
+                                Toast.makeText(getApplicationContext(), "이미 해당 party에서 활동하고 계십니다." , Toast.LENGTH_SHORT).show();
+                            }
+                            //적당한 위치를 못 찾았을 때
+                            else if(!alreadyPicked){
+                              Toast.makeText(getApplicationContext(), "최대 5개까지의 party 밖에 생성을 하지 못 합니다." , Toast.LENGTH_SHORT).show();
                             } else{
                                 //무조건 추가 가능 한 부분, party 도 가능하고, 수용인원도 가능하고
                                 requestPutParty();
@@ -272,8 +281,9 @@ public class HomeSeeWriting extends AppCompatActivity {
     }
     private void requestPutSuggest(String suggest_id) throws JSONException {
         JSONObject temp = arrSuggest.getJSONObject(0);
-        PostSuggest post =new PostSuggest(temp.getString("startTime"),temp.getString("endTime"), temp.getString("created_by"),temp.getString("title"),temp.getString("content"),
-                temp.getString("location"),Integer.parseInt(temp.getString("capacity")),Integer.parseInt(temp.getString("current")),Integer.parseInt(temp.getString("hobby_id")));
+        PostSuggest post =new PostSuggest(temp.getString("startTime").replace("T"," ").replace(".000Z",""),temp.getString("endTime").replace("T"," ").replace(".000Z",""),
+                temp.getString("created_by"),temp.getString("title"),temp.getString("content"),
+                temp.getString("location"),Integer.parseInt(temp.getString("capacity")),Integer.parseInt(temp.getString("current"))+1,Integer.parseInt(temp.getString("hobby_id")));
         Call<PostSuggest> call_post = service.putSuggest(suggest_id, post);
         call_post.enqueue(new Callback<PostSuggest>() {
             @Override
@@ -325,7 +335,9 @@ public class HomeSeeWriting extends AppCompatActivity {
                 oneSuggestStartTime.setText(arrSuggest.getJSONObject(0).getString("startTime").replace("T"," ").replace(".000Z",""));
                 oneSuggestFinishTime.setText(arrSuggest.getJSONObject(0).getString("endTime").replace("T"," ").replace(".000Z",""));
 
-                if(arrSuggest.getJSONObject(0).getString("capacity").equals(arrSuggest.getJSONObject(0).getString("current"))){
+                if(Integer.parseInt(arrSuggest.getJSONObject(0).getString("capacity"))==Integer.parseInt(arrSuggest.getJSONObject(0).getString("current"))){
+                    ableToJoin = false;
+                }else if (Integer.parseUnsignedInt(current_user_id) == Integer.parseUnsignedInt(arrSuggest.getJSONObject(0).getString("created_by"))){
                     ableToJoin = false;
                 }else{
                     ableToJoin = true;

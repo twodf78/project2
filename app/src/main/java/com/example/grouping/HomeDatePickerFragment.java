@@ -34,6 +34,6 @@ public class HomeDatePickerFragment extends DialogFragment implements DatePicker
         String year_string = Integer.toString(year);
         String dateMessage = (month_string + "/" + day_string + "/" + year_string);
 
-        tv.setText(tv.getText()+String.valueOf(year)+"년 "+String.valueOf(month)+"월 "+String.valueOf(dayOfMonth)+"일 \n");
+        tv.setText(tv.getText()+String.valueOf(year)+"년 "+String.valueOf(month+1)+"월 "+String.valueOf(dayOfMonth)+"일 \n");
     }
 }

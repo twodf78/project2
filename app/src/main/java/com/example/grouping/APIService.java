@@ -26,10 +26,11 @@ public interface APIService {
     @GET("/get/suggest")
     Call<ResponseBody> getSuggest();
 
-    @GET("/get/suggest/:id")
+    //:id로 찍으면 그냥 인자로 인식해버림
+    @GET("/get/suggest/id")
     Call<ResponseBody> getSuggestById(@Query("data") String data);
 
-    @GET("/get/suggest/:user_id")
+    @GET("/get/suggest/created_by")
     Call<ResponseBody> getSuggestByUserId(@Query("data") String data);
 
     @GET("/get/party")
@@ -68,8 +69,8 @@ public interface APIService {
     @PUT("/put/suggest/{id}")
     Call<PostSuggest> putSuggest(@Path("id") String id, @Body PostSuggest post);
 
-    @PUT("/put/party/{id}")
-    Call<PostParty> putParty(@Path("id") String id, @Body PostParty post);
+    @PUT("/put/party/{user_id}")
+    Call<PostParty> putParty(@Path("user_id") String user_id, @Body PostParty post);
 
 
     @DELETE("/delete/user")

@@ -31,7 +31,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MypageMywritingActivity extends AppCompatActivity {
     //내가 쓴 제안서들
     RecyclerView recyclerView;
-    HomeRecyclerAdapterAll adapter;
+    MyPageWritingAdapter adapter;
     private static final String URL = "http://192.249.19.184:443/";
     private final String TAG = "request log";
 
@@ -53,7 +53,7 @@ public class MypageMywritingActivity extends AppCompatActivity {
 
         recyclerView =findViewById(R.id.writingRecyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        adapter = new HomeRecyclerAdapterAll( getApplicationContext());
+        adapter = new MyPageWritingAdapter( getApplicationContext());
         requestSuggest();
     }
 

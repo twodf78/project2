@@ -36,6 +36,6 @@
         android:layout_marginTop="20dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        tools:listitem="@layout/home_itemlist_all"/>
+        tools:listitem="@layout/mypage_itemlist_mywriting"/>
 
 </LinearLayout>
