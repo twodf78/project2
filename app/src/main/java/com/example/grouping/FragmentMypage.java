@@ -69,28 +69,6 @@ public class FragmentMypage extends Fragment {
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         View view = inflater.inflate(R.layout.fragment_mypage, container, false);
-        TextView attractView = view.findViewById(R.id.myPageAttract);
-        int attractNum = Integer.parseInt(attractView.getText().toString());
-        mypageHeartImage=(ImageView)view.findViewById(R.id.mypageHeartBar);
-        mypageHeartImage.post(new Runnable() {
-            @Override
-            public void run() {
-                Resources resources = getResources();
-                if (attractNum >= 60 && attractNum < 80){
-                    mypageHeartImage.setImageResource(R.drawable.heartbar4);
-                }
-                else if(attractNum >= 80){
-                    mypageHeartImage.setImageDrawable(resources.getDrawable(R.drawable.heartbar5));
-                }
-                else if (attractNum<=40 && attractNum >20){
-                    mypageHeartImage.setImageResource(R.drawable.heartbar2);
-                }
-                else if (attractNum<=20){
-                    mypageHeartImage.setImageResource(R.drawable.heartbar1);
-                }
-            }
-        });
-
         return inflater.inflate(R.layout.fragment_mypage, container, false);
     }
 
@@ -127,12 +105,6 @@ public class FragmentMypage extends Fragment {
             }
         });
 
-
-
-
-
-
-
         //이 안으로 못 들어감
         mypageLogoutBtn=view.findViewById(R.id.kakaoLogoutbtn);
         mypageLogoutBtn.setOnClickListener(new View.OnClickListener() {
@@ -159,22 +131,11 @@ public class FragmentMypage extends Fragment {
             }
         });
 
-//        int attractNum = Integer.parseInt(attractView.getText().toString());
-//        if (attractNum >= 60 && attractNum < 80){
-//            mypageHeartImage.setImageResource(R.drawable.heartbar4);
-//        }
-//        else if(attractNum >= 80){
-//            mypageHeartImage.setImageResource(R.drawable.heartbar5);
-//        }
-//        else if (attractNum<=40 && attractNum >20){
-//            mypageHeartImage.setImageResource(R.drawable.heartbar2);
-//        }
-//        else if (attractNum<=20){
-//            mypageHeartImage.setImageResource(R.drawable.heartbar1);
-//        }
-
-
         request(titleView,nameView,attractView,hobbyView);
+
+
+        mypageHeartImage=(ImageView)view.findViewById(R.id.mypageHeartBar);
+
 
     }
 
@@ -194,6 +155,27 @@ public class FragmentMypage extends Fragment {
                             attractView.setText(arr.getJSONObject(0).getString("attractive"));
                             hobbyView.setText(arr.getJSONObject(0).getString("hobby_id"));
                             requestTitle(titleView,arr.getJSONObject(0).getString("attractive"));
+
+                            String attracttext=attractView.getText().toString();
+                            int attractNum = Integer.parseInt(attracttext);
+                            mypageHeartImage.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Resources resources = getResources();
+                                    if (attractNum > 60 && attractNum < 80){
+                                        mypageHeartImage.setImageResource(R.drawable.heartbar4);
+                                    }
+                                    else if(attractNum >= 80){
+                                        mypageHeartImage.setImageResource(R.drawable.heartbar5);
+                                    }
+                                    else if (attractNum<=40 && attractNum >20){
+                                        mypageHeartImage.setImageResource(R.drawable.heartbar2);
+                                    }
+                                    else if (attractNum<=60 && attractNum >40){
+                                        mypageHeartImage.setImageResource(R.drawable.heartbar3);
+                                    }
+                                }
+                            });
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

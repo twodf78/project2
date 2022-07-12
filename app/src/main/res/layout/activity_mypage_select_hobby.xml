@@ -15,6 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="마이 Gathering"
+            android:textColor="@color/black"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:textSize="30dp"/>
@@ -27,14 +28,130 @@
             android:textSize="15dp"/>
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp">
+        android:orientation="vertical"
+        android:layout_marginTop="55dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <Button
+                android:id="@+id/mypageSelectbtn1"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:background="@drawable/btn_round_shape2"
+                android:text="전체"
+                android:layout_margin="15dp"
+                android:textSize="20dp"/>
+            <Button
+                android:id="@+id/mypageSelectbtn2"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:background="@drawable/btn_round_shape2"
+                android:text="영화"
+                android:layout_margin="15dp"
+                android:textSize="20dp"/>
+            <Button
+                android:id="@+id/mypageSelectbtn3"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:background="@drawable/btn_round_shape2"
+                android:text="스포츠"
+                android:layout_margin="15dp"
+                android:textSize="20dp"/>
+        </LinearLayout>
 
-    </androidx.recyclerview.widget.RecyclerView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <Button
+                android:id="@+id/mypageSelectbtn4"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:background="@drawable/btn_round_shape2"
+                android:text="맛집탐방"
+                android:layout_margin="15dp"
+                android:textSize="20dp"/>
+            <Button
+                android:id="@+id/mypageSelectbtn5"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:background="@drawable/btn_round_shape2"
+                android:text="SNS"
+                android:layout_margin="15dp"
+                android:textSize="20dp"/>
+            <Button
+                android:id="@+id/mypageSelectbtn6"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:background="@drawable/btn_round_shape2"
+                android:text="줌터디"
+                android:layout_margin="15dp"
+                android:textSize="20dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <Button
+                android:id="@+id/mypageSelectbtn7"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:background="@drawable/btn_round_shape2"
+                android:text="어학"
+                android:layout_margin="15dp"
+                android:textSize="20dp"/>
+            <Button
+                android:id="@+id/mypageSelectbtn8"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:background="@drawable/btn_round_shape2"
+                android:text="밴드"
+                android:layout_margin="15dp"
+                android:textSize="20dp"/>
+            <Button
+                android:id="@+id/mypageSelectbtn9"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:background="@drawable/btn_round_shape2"
+                android:text="코딩/IT"
+                android:layout_margin="15dp"
+                android:textSize="20dp"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="20dp">
+            <Button
+                android:id="@+id/mypageSelectbtn10"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:background="@drawable/btn_round_shape2"
+                android:text="알코올"
+                android:layout_margin="15dp"
+                android:textSize="20dp"/>
+            <Button
+                android:id="@+id/mypageSelectbtn11"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:background="@drawable/btn_round_shape2"
+                android:text="여행"
+                android:layout_margin="15dp"
+                android:textSize="20dp"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
 
 
 </LinearLayout>

@@ -129,14 +129,11 @@ public class MainActivity extends AppCompatActivity {
                         .setReorderingAllowed(true)
                         .replace(R.id.framemainlayout, FragmentChatting.class, null)
                         .commit();
-            else if (itemId == R.id.tabhome) {
+            else if (itemId == R.id.tabhome)
                 fragmentManager.beginTransaction()
                         .setReorderingAllowed(true)
                         .replace(R.id.framemainlayout, FragmentHome.class, null)
                         .commit();
-
-
-            }
             else if (itemId == R.id.tabmypage) {
                 fragmentManager.beginTransaction()
                         .setReorderingAllowed(true)

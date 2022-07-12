@@ -80,7 +80,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:text="걸음마 떼는 인싸"
+                    android:text=""
+                    android:textColor="@color/black"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -90,7 +91,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:text="valuec"
+                android:text=""
                 android:textSize="20dp" />
 
             <LinearLayout
@@ -100,18 +101,20 @@
 
                 <ImageView
                     android:id="@+id/mypageHeartBar"
-                    android:layout_width="60dp"
+                    android:layout_width="80dp"
                     android:layout_height="20dp"
                     android:layout_marginTop="3dp"
-                    android:src="@drawable/heartbar3" />
+                    android:src="@drawable/heartbar1" />
 
                 <TextView
                     android:id="@+id/myPageAttract"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginLeft="3dp"
-                    android:text="50" />
+                    android:layout_marginTop="0dp"
+                    android:layout_marginLeft="6dp"
+                    android:textSize="20dp"
+                    android:textColor="@color/black"
+                    android:text="" />
 
 
             </LinearLayout>
